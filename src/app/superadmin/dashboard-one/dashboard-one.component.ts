@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { combineLatest, combineLatestWith, forkJoin } from "rxjs";
+import { CommonService } from "src/app/service/common.service";
+import { ToastService } from "src/app/service/toast.service";
 
 @Component({
   selector: "app-dashboard-one",
@@ -10,10 +13,50 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 export class DashboardOneComponent {
   chart1: any;
   chart2: any;
+  role: any = ''
+  zoneList: any[] = []
+  zoneSelectId: any = 0
+  wcList: any[] = []
+
+
+
+constructor(private service: CommonService, private toastService: ToastService) {
+    this.role =  localStorage.getItem('role');
+    this.getZones()
+}
 
   ngOnInit() {
     this.createChart1();
     this.createChart2();
+  }
+
+  getDataForGraph(){
+    
+
+  }
+
+  getZones() {
+    try {
+        this.zoneList = this.service.get(`/zone/getAllZone`)
+    } catch (e) {
+        console.error(e)
+    }
+  }
+
+  getWcListByZoneId() {
+    try {
+            this.wcList = this.service.get(`/zone/getAllWc/`+ this.zoneSelectId)
+    } catch (e) {
+            console.error(e)
+    }
+}
+
+ 
+
+  onZoneSelect(ev: any) {
+    console.log(' Response Data :   ' ,ev.target.value);
+    this.zoneSelectId = ev.target.value;
+    this.getWcListByZoneId();
   }
 
   createChart1() {

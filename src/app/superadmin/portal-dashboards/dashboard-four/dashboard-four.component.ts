@@ -1,35 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Chart, { scales } from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-dashboard-four',
   templateUrl: './dashboard-four.component.html',
   styleUrls: ['../../../common.css', './dashboard-four.component.css']
 })
-export class DashboardFourComponent {
- constructor( private service:CommonService){}
+export class DashboardFourComponent implements OnInit {
+
   chart1: any;
   chart2: any;
   chart3: any;
   chart4: any;
   chart5: any;
-  mrfReportList:any=[]
-  loginResponse:any
+
   ngOnInit() {
     this.createChart1();
     this.createChart2();
     this.createChart3();
     this.createChart4();
     this.createChart5();
-
-    this.service.getAllMrfReports().subscribe(
-      data=>{
-        this.loginResponse=data
-        this.mrfReportList=this.loginResponse.data
-      }
-    );
   }
 
   randomScalingFactor() {
@@ -37,7 +28,7 @@ export class DashboardFourComponent {
   }
 
   createChart1() {
-    this.chart1 = new Chart("chart1", {
+    this.chart1 = new Chart("chart-df4617c3-18be-4737-9299-849235eb3bae", {
       type: "doughnut",
       data: {
         labels: ["Package", "Unsold", "Sold"],
@@ -93,7 +84,7 @@ export class DashboardFourComponent {
   }
 
   createChart2() {
-    this.chart2 = new Chart("chart2", {
+    this.chart2 = new Chart("chart-1cdc1de6-f9e7-4552-aab7-9095e7771004", {
       type: "line",
       data: {
         labels: ["2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012", "2011"],
@@ -148,7 +139,7 @@ export class DashboardFourComponent {
   }
 
   createChart3() {
-    this.chart3 = new Chart("chart3", {
+    this.chart3 = new Chart("chart-3dd8c851-105e-4d7e-baba-f8c791c531c5", {
       type: "bar",
       data: {
         labels: ["Total Employee", "Present", "Absent"],
@@ -193,7 +184,7 @@ export class DashboardFourComponent {
   }
 
   createChart4() {
-    this.chart4 = new Chart("chart4", {
+    this.chart4 = new Chart("chart-76208973-b156-4bb3-a474-b6c12f7f5ff7", {
       type: "doughnut",
       data: {
         labels: [
@@ -229,7 +220,7 @@ export class DashboardFourComponent {
   }
 
   createChart5() {
-    this.chart5 = new Chart("chart5", {
+    this.chart5 = new Chart("chart-029ea4bc-fac1-4296-b731-25bb7c6598ac", {
       type: "bar",
       data: {
         labels: ["Package", "Unsold", "Sold"],

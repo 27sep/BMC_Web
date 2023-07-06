@@ -7,11 +7,21 @@
                     <select name="" id="" class="form-control form-select dashboard-select-box">
                         <option value="">South West Zone</option>
                     </select>
+                    <!-- <select formControlName="zoneId" class="form-control form-select dashboard-select-box" [(ngModel)]="zoneId" (change)="onZoneSelect($event)">
+                        <option value="">Select</option>
+                        <option value={{zoneName}} disabled selected>{{zoneSelectName}}</option> 
+                        <option [value]="x.zoneId" *ngFor="let x of zoneList;">{{x.zoneName}}</option>
+                    </select> -->
                 </div>
                 <div class="mt-4">
                     <select name="" id="" class="form-control form-select dashboard-select-box">
                         <option value="">Pokhariput WC</option>
-                    </select>
+                    </select> 
+                    <!-- <select formControlName="wcId" class="form-control form-select dashboard-select-box" [(ngModel)]="wcId">
+                        <option value="">Select</option>
+                        <option value={{wcName}} disabled selected>{{wcName}}</option>
+                        <option [value]="x.wcId" *ngFor="let x of zoneList;">{{x.wcName}}</option>
+                    </select>  -->
                 </div>
 			</div>
 			<div class="col-lg-9 mb-4">

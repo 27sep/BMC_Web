@@ -17,7 +17,7 @@
 			<div class="col-lg-9 mb-4">
 				<div class="card">
 					<div class="card-body">
-						<!-- <div class="row">
+						<div class="row">
 							<div class="col-md-3">
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-1 stat-card">
@@ -90,8 +90,7 @@
 									</div>
 								</div>
 							</div>
-						</div> -->
-                        <app-heade-dashboard-component></app-heade-dashboard-component>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -110,7 +109,7 @@
                     <div class="card-body px-4 pb-3">
                         <a routerLink="/superadmin/portal-dashboards/dashboard-one" class="home-card home-card-2">
                         <div class="">
-                            <canvas id="chart5" style="height: 150px;">{{ chart5 }}</canvas>
+                            <canvas id="chart-029ea4bc-fac1-4296-b731-25bb7c6598ac" style="height: 150px;">{{ chart5 }}</canvas>
                         </div>
                         </a>
                     </div>
@@ -129,7 +128,7 @@
                     <div class="card-body px-4 pb-3">
                         <a routerLink="/superadmin/portal-dashboards/dashboard-three" class="home-card home-card-2">
                         <div class="">
-                            <canvas id="chart1" style="height: 200px;">{{ chart1 }}</canvas>
+                            <canvas id="chart-df4617c3-18be-4737-9299-849235eb3bae" style="height: 200px;">{{ chart1 }}</canvas>
                         </div>
                         </a>
                     </div>
@@ -154,13 +153,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of mrfReportList">
-                                    <td class="border-end border-bottom-0">{{item.goodsName}}</td>
-                                    <td class="border-end border-bottom-0">{{item.dailyMrfValue}} KG</td>
-                                    <td class="border-end border-bottom-0">{{item.weeklyMrfValue}} KG</td>
-                                    <td class="border-bottom-0">{{item.monthlyMrfValue}} KG</td>
+                                <tr>
+                                    <td class="border-end border-bottom-0">Bailing</td>
+                                    <td class="border-end border-bottom-0">700 KG</td>
+                                    <td class="border-end border-bottom-0">1700 KG</td>
+                                    <td class="border-bottom-0">2200 KG</td>
                                 </tr>
-                                
+                                <tr>
+                                    <td class="border-end border-bottom-0">Ready to sale</td>
+                                    <td class="border-end border-bottom-0">460 KG</td>
+                                    <td class="border-end border-bottom-0">1500 KG</td>
+                                    <td class="border-bottom-0">1800 KG</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-end border-bottom-0">Unsold</td>
+                                    <td class="border-end border-bottom-0">640 KG</td>
+                                    <td class="border-end border-bottom-0">1200 KG</td>
+                                    <td class="border-bottom-0">800 KG</td>
+                                </tr>
                             </tbody>
                         </table>
                         </a>
@@ -179,7 +189,7 @@
                     </div>
                     <div class="card-body px-4 pb-3">
                         <div class="">
-                            <canvas id="chart2" style="height: 400px;">{{ chart2 }}</canvas>
+                            <canvas id="chart-1cdc1de6-f9e7-4552-aab7-9095e7771004" style="height: 400px;">{{ chart2 }}</canvas>
                         </div>
                     </div>
                 </div>
@@ -196,7 +206,7 @@
                     </div>
                     <div class="card-body px-4 pb-3">
                         <div class="">
-                            <canvas id="chart3" style="height: 150px;">{{ chart3 }}</canvas>
+                            <canvas id="chart-3dd8c851-105e-4d7e-baba-f8c791c531c5" style="height: 150px;">{{ chart3 }}</canvas>
                         </div>
                     </div>
                 </div>
@@ -211,7 +221,7 @@
                     </div>
                     <div class="card-body px-4 pb-3">
                         <div class="">
-                            <canvas id="chart4" style="height: 200px;">{{ chart4 }}</canvas>
+                            <canvas id="chart-76208973-b156-4bb3-a474-b6c12f7f5ff7" style="height: 200px;">{{ chart4 }}</canvas>
                         </div>
                     </div>
                 </div>

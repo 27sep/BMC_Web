@@ -11,7 +11,7 @@
 					<div class="text-sm text-success text-xs">Pokhariput</div> -->
 					<div class="h5 mb-0" ><span style="font-size: 18px !important; color: #aaaaaa;">{{name}}</span></div>
 					<div class="h5 mb-0"><span style="font-size: 12px !important; color: #aaaaaa;">{{role}}</span></div>
-					<div class="text-sm text-success text-xs"><span style="font-size: 12px !important; color: #aaaaaa;">{{mccName}}</span></div>
+					<div class="text-sm text-success text-xs"><span style="font-size: 12px !important; color: #aaaaaa;" *ngIf="role != 'bmcadmin'">{{mccName}}</span></div>
 				</div>
 				<div class="ms-auto pl-3 text-end">
 					<div class="dropdown">

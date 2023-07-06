@@ -25,7 +25,7 @@ export class DashboardThreeComponent {
   }
 
   createChart1() {
-    this.chart1 = new Chart("chart1", {
+    this.chart1 = new Chart("chart-46cfc0cf-8596-47ba-96b0-91a8c671c047", {
       type: "doughnut",
       data: {
         labels: ["Package", "Unsold", "Sold"],
@@ -81,7 +81,7 @@ export class DashboardThreeComponent {
   }
 
   createChart2() {
-    this.chart2 = new Chart("chart2", {
+    this.chart2 = new Chart("chart-dc7f9855-88b4-4a15-9da5-8b73646b1d46", {
       type: "bar",
       data: {
         labels: ["2022", "2021", "2020", "2019", "2018", "2017"],
@@ -129,7 +129,7 @@ export class DashboardThreeComponent {
   }
 
   createChart3() {
-    this.chart3 = new Chart("chart3", {
+    this.chart3 = new Chart("chart-a4a63e7d-7c9c-4963-a345-4f2c4c1ff19a", {
       type: "bar",
       data: {
         labels: ["Total Employee", "Present", "Absent"],
@@ -174,7 +174,7 @@ export class DashboardThreeComponent {
   }
 
   createChart4() {
-    this.chart4 = new Chart("chart4", {
+    this.chart4 = new Chart("chart-0b976614-b93d-402a-9605-70803089fe67", {
       type: "doughnut",
       data: {
         labels: [

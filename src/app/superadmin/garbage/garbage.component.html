@@ -50,26 +50,26 @@
 											<div class="row">
 												<div class="col-md-6">
 													<div class="row">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															Vehicle Number
+														<div class="col-md-3 pe-0">
+															Vehicle Number<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
 															<input formControlName="vehicleNumber" type="text" name=""
-																id="" class="form-control" (input)="setVehicleNumber()">
+																id="vehicleNumber" class="form-control" (input)="setVehicleNumber()">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															Trip Start Reading
+														<div class="col-md-3 pe-0">
+															Trip Start Reading<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
-															<input formControlName="tripStartReading" type="text" min="0"
-																name="" id="" class="form-control">
+															<input formControlName="tripStartReading" type="number" min="0"
+																name="" id="tripStartReading" class="form-control">
 														</div>
 													</div>
-													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															Trip Start Reading Picture
+													<div class="row mt-3 tripStartReadingPictureDiv">
+														<div class="col-md-3 pe-0">
+															Trip Start Reading Picture<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
 															<input type="file" name="" id="" class="form-control"
@@ -77,16 +77,16 @@
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 tripEndReadingDiv">
 															Trip End Reading
 														</div>
 														<div class="col-md-9">
-															<input type="text" name="" id="" class="form-control"
+															<input type="number" name="" id="tripEndReading" class="form-control"
 																formControlName="tripEndReading">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 tripEndReadingPictureDiv">
 															Trip End Reading Picture
 														</div>
 														<div class="col-md-9">
@@ -114,43 +114,43 @@
 												</div>
 												<div class="col-md-6">
 													<div class="row">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															DL Number
+														<div class="col-md-3 pe-0">
+															DL Number<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
 															<input formControlName="driverDlNo" type="text" name=""
-																id="" class="form-control">
+																id="driverDlNo" class="form-control">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															Driver Name
+														<div class="col-md-3 pe-0">
+															Driver Name<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
-															<input type="text" name="" id="" class="form-control"
+															<input type="text" name="" id="driverName" class="form-control"
 																formControlName="driverName">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
-															Helper Name
+														<div class="col-md-3 pe-0">
+															Helper Name<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
 															<select 
-																class="form-select" formControlName="helperId">
+																class="form-select" formControlName="helperId" id="helperId">
 																<option value="" disabled selected>--Select--</option>
 																<option [value]="item.helperId" *ngFor="let item of helperList">{{item.helperName}}</option>
 															</select>
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0">
 															Route
 														</div>
 														<div class="col-md-9">
-															<select formControlName="routeId" class="form-select">
+															<select formControlName="routeId" id="routeId" class="form-select">
                                                                 <option value="" disabled selected>--Select--</option>
-                                                                <option [value]="x.routeId" *ngFor="let x of routeList;">{{x.routeName}}</option>
+                                                                <option [value]="x.routeId" *ngFor="let x of routeList;">{{x.routeName}} - {{x.routeDesc}}</option>
                                                         </select>
 															<!-- <select name="" id=""
 																class="form-control form-select bg-transparent text-white">
@@ -206,48 +206,48 @@
 
 											<div class="row">
 												<div class="col-md-6">
-													<div class="row">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+													<div class="row grossWeightDiv">
+														<div class="col-md-3 pe-0 label">
 															Gross Weight/Kg
 														</div>
 														<div class="col-md-3">
-															<input type="number" name="" id="" class="form-control" 
+															<input type="number" min="0" name="" id="grossWeightValue" class="form-control" 
 																formControlName="grossWeightValue">
 														</div>
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 unloadWetWeightDiv">
 															Unload Wet Weight/Kg
 														</div>
 														<div class="col-md-3">
-															<input type="number" name="" id="unloadId" class="form-control" 
+															<input type="number" min="0" name="" id="unloadId" class="form-control" 
 																formControlName="unloadwetWeightValue" (mouseout)="wetWeightCal()">
 														</div>
 													</div> 
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 tareWeightDiv">
 															Tare Weight/Kg
 														</div>
 														<div class="col-md-9">
-															<input type="text" name="" id="" class="form-control" 
+															<input type="text" min="0" name="" id="tareWeightValue" class="form-control" 
 															formControlName="tareWeightValue">
 														</div>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="row">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 wetWeightDiv">
 															Wet Weight/Kg
 														</div>
 														<div class="col-md-5">
-															<input type="number" name="" id="" class="form-control"
+															<input type="number" min="0" name="" id="wetWeightValue" class="form-control"
 																formControlName="wetWeightValue">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 d-flex align-items-center pe-0">
+														<div class="col-md-3 pe-0 dryWeightDiv">
 															Dry Weight/Kg
 														</div>
 														<div class="col-md-5">
-															<input type="number" name="" id="" class="form-control"
+															<input type="number" min="0" name="" id="dryWeightValue" class="form-control"
 																formControlName="dryWeightValue">
 														</div>
 													</div>
