@@ -15,8 +15,9 @@ import { ToastService } from 'src/app/service/toast.service';
 export class GarbageComponent implements OnInit {
 
   constructor(private service: CommonService, private formBuilder: FormBuilder, private httpClient: HttpClient, private toastService: ToastService) {
-    this.getRouteList()
+    
     this.wcId = localStorage.getItem("wcId");
+    this.getRouteList()
    }
    isAdd: boolean = true
    isUpdate: boolean = false
@@ -53,7 +54,7 @@ export class GarbageComponent implements OnInit {
   wcId: any = 0;
   ngOnInit() {
     this.setVehicleNumber()
-    this.service.getAllHelper().subscribe(
+    this.service.getAllHelperByWc().subscribe(
       data=>{
          this.helperList=data
       }
@@ -332,11 +333,14 @@ export class GarbageComponent implements OnInit {
             "driver":this.vehcileDataResponse.data.driver,
             "route": this.vehcileDataResponse.data.route,
             "tripStartReading": this.form.value.tripStartReading,
-            "tripStartReadingImg": fileName,
+            "tripStartReadingImg": fileUrl,
             "vehicleNo": this.vehcileDataResponse.data.vehicleNo,
             "helper": {
               "helperId":this.form.value.helperId
-            }
+            },
+            "wc": {
+              "wcId":localStorage.getItem('wcId')
+             }
           }
           console.log(data)
           this.service.createTrip(data).subscribe(
@@ -748,12 +752,12 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const dryWeightValueElement = document.querySelector('#dryWeightValue') as HTMLInputElement;
-    const dryWeightValue = dryWeightValueElement.value.trim();
-    if (dryWeightValue === '') {
-      this.toastService.showWarning('Dry weight is required.');
-      return;
-    }
+    // const dryWeightValueElement = document.querySelector('#dryWeightValue') as HTMLInputElement;
+    // const dryWeightValue = dryWeightValueElement.value.trim();
+    // if (dryWeightValue === '') {
+    //   this.toastService.showWarning('Dry weight is required.');
+    //   return;
+    // }
 
     const data={
       "tareWt": this.form.value.tareWeightValue,
@@ -1130,7 +1134,7 @@ export class GarbageComponent implements OnInit {
               "id": 5
             },
             "vehicleNo":this.form.value.vehicleNumber,
-            "tripEndReadingImg": fileName
+            "tripEndReadingImg": fileUrl
           }
           this.service.updateTrip(data).subscribe(
             data=>{

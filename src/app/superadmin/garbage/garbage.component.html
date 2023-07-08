@@ -2,10 +2,12 @@
 <main class="container-fluid">
 	<div class="page-content p-3">
 		<div class="row">
-			<div class="col-lg-3 sidebar-parent">
-				<app-sidebar></app-sidebar> 
+			<div class="col-xl-3 sidebar-parent">
+				<div class="d-none d-xl-block">
+					<app-sidebar></app-sidebar>
+				</div> 
 			</div>
-			<div class="col-lg-9 app-content">
+			<div class="col-xl-9 app-content mt-4 mt-xl-0">
 				<div class="card">
 					<div class="card-body">
 						<app-heade-dashboard-component></app-heade-dashboard-component>
@@ -22,17 +24,17 @@
 					<form [formGroup]="form">
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
 							<li class="nav-item w-33" role="presentation">
-								<button class="nav-link active w-100 text-uppercase text-white" id="trip-tab"
+								<button class="nav-link active w-100 h-100 text-uppercase text-white" id="trip-tab"
 									data-bs-toggle="tab" data-bs-target="#trip-tab-pane" type="button" role="tab"
 									aria-controls="trip-tab-pane" aria-selected="true">Trip Details</button>
 							</li>
 							<li class="nav-item w-33" role="presentation">
-								<button class="nav-link w-100 text-uppercase text-white" id="active-tab"
+								<button class="nav-link w-100 h-100 text-uppercase text-white" id="active-tab"
 									data-bs-toggle="tab" data-bs-target="#active-tab-pane" type="button" role="tab"
 									aria-controls="active-tab-pane" aria-selected="false">Active Trips</button>
 							</li>
 							<li class="nav-item w-33" role="presentation">
-								<button class="nav-link w-100 text-uppercase text-white" id="completed-tab"
+								<button class="nav-link w-100 h-100 text-uppercase text-white" id="completed-tab"
 									data-bs-toggle="tab" data-bs-target="#completed-tab-pane" type="button" role="tab"
 									aria-controls="completed-tab-pane" aria-selected="false">Completed Trips</button>
 							</li>
@@ -48,7 +50,7 @@
 										<div class="card-body">
 
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-sm-6">
 													<div class="row">
 														<div class="col-md-3 pe-0">
 															Vehicle Number<span class="text-danger">*</span>
@@ -112,7 +114,7 @@
 														</div>
 													</div> -->
 												</div>
-												<div class="col-md-6">
+												<div class="col-sm-6 mt-3 mt-sm-0">
 													<div class="row">
 														<div class="col-md-3 pe-0">
 															DL Number<span class="text-danger">*</span>
@@ -161,31 +163,31 @@
 															</select> -->
 														</div>
 													</div>
-													<div style="display: flex; flex-direction: row;float: right;">
-														<div class="trip-button text-end mt-5 pt-2"
+													<div class="d-block d-md-flex justify-content-md-end gap-2">
+														<div class="trip-button text-end mt-4 mt-md-5 pt-2"
 															*ngIf="tripStartButton; else tripStratButtonNot">
-															<button class="btn btn-trip btn-warning"
+															<button class="btn btn-trip btn-warning w-100"
 																(click)="createTrip()">
 																Trip Start
 															</button>
 														</div>
 														<ng-template #tripStratButtonNot>
-															<div class="trip-button text-end mt-5 pt-2">
-																<button class="btn btn-trip btn-secondary">
+															<div class="trip-button text-end mt-4 mt-md-5 pt-2">
+																<button class="btn btn-trip btn-secondary w-100">
 																	Trip Start
 																</button>
 															</div>
 														</ng-template>
-														<div class="trip-button text-end mt-5 pt-2"
+														<div class="trip-button text-end mt-2 mt-md-5 pt-2"
 															*ngIf="tripEndButton; else tripEndButtonNot">
-															<button class="btn btn-trip btn-primary ml-10"
+															<button class="btn btn-trip btn-primary w-100"
 																(click)="endTrip()">
 																Trip End
 															</button>
 														</div>
 														<ng-template #tripEndButtonNot>
-															<div class="trip-button text-end mt-5 pt-2">
-																<button class="btn btn-trip btn-secondary ml-10">
+															<div class="trip-button text-end mt-2 mt-md-5 pt-2">
+																<button class="btn btn-trip btn-secondary  w-100">
 																	Trip End
 																</button>
 															</div>
@@ -205,7 +207,7 @@
 										<div class="card-body">
 
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-sm-6 col-md-12 col-lg-8 col-xl-6">
 													<div class="row grossWeightDiv">
 														<div class="col-md-3 pe-0 label">
 															Gross Weight/Kg
@@ -214,7 +216,7 @@
 															<input type="number" min="0" name="" id="grossWeightValue" class="form-control" 
 																formControlName="grossWeightValue">
 														</div>
-														<div class="col-md-3 pe-0 unloadWetWeightDiv">
+														<div class="col-md-3 mt-3 mt-md-0 pe-0 unloadWetWeightDiv">
 															Unload Wet Weight/Kg
 														</div>
 														<div class="col-md-3">
@@ -232,21 +234,21 @@
 														</div>
 													</div>
 												</div>
-												<div class="col-md-6">
+												<div class="col-sm-6 col-md-12 col-lg-4 col-xl-6 mt-3 mt-sm-0 mt-md-3 mt-lg-0">
 													<div class="row">
-														<div class="col-md-3 pe-0 wetWeightDiv">
+														<div class="col-md-3 col-lg-4 col-xl-3 pe-0 wetWeightDiv">
 															Wet Weight/Kg
 														</div>
-														<div class="col-md-5">
+														<div class="col-md-5 col-lg-8 col-xl-9">
 															<input type="number" min="0" name="" id="wetWeightValue" class="form-control"
 																formControlName="wetWeightValue">
 														</div>
 													</div>
 													<div class="row mt-3">
-														<div class="col-md-3 pe-0 dryWeightDiv">
+														<div class="col-md-3 col-lg-4 col-xl-3 pe-0 dryWeightDiv">
 															Dry Weight/Kg
 														</div>
-														<div class="col-md-5">
+														<div class="col-md-5 col-lg-8 col-xl-9">
 															<input type="number" min="0" name="" id="dryWeightValue" class="form-control"
 																formControlName="dryWeightValue">
 														</div>
@@ -257,41 +259,41 @@
 										</div>
 									</div>
 								</div>
-								<div class="mt-4 d-flex justify-space-between">
-									<div class="d-flex-1 text-start"
+								<div class="mt-4 d-md-flex justify-space-md-between mb-lg-4">
+									<div class="d-flex-1 text-start mx-3"
 										*ngIf="grossWeightCapturedButton; else grossWeightCapturedButtonNot">
-										<button class="btn btn-gross-weight btn-primary" (click)="setGrossWtValue()">
+										<button class="btn btn-gross-weight btn-primary w-100" (click)="setGrossWtValue()">
 											Gross Weight
 										</button>
 									</div>
 									<ng-template #grossWeightCapturedButtonNot>
-										<div class="d-flex-1 text-center">
-											<button class="btn btn-gross-weight btn-secondary">
+										<div class="d-flex-1 text-center mx-3">
+											<button class="btn btn-gross-weight btn-secondary w-100">
 												Gross Weight
 											</button>
 										</div>
 									</ng-template>
-									<div class="d-flex-1 text-end"
+									<div class="d-flex-1 text-end mx-3 mt-3 mt-md-0"
 										*ngIf="wetWeightCapturedButton; else wetWeightCapturedButtonNot">
-										<button class="btn btn-wet-weight btn-primary" (click)="setWetWtValue()">
+										<button class="btn btn-wet-weight btn-primary w-100" (click)="setWetWtValue()">
 											Captured Wet Weight
 										</button>
 									</div>
 									<ng-template #wetWeightCapturedButtonNot>
-										<div class="d-flex-1 text-center">
-											<button class="btn btn-wet-weight btn-secondary">
+										<div class="d-flex-1 text-center mx-3 mt-3 mt-md-0">
+											<button class="btn btn-wet-weight btn-secondary w-100">
 												Captured Wet Weight
 											</button>
 										</div>
 									</ng-template>
-									<div class="d-flex-1 text-center" *ngIf="dryButton; else dryButtonNot">
-										<button class="btn btn-dry-weight btn-primary" (click)="setDryWtValue()">
+									<div class="d-flex-1 text-center mx-3 mt-3 mt-md-0" *ngIf="dryButton; else dryButtonNot">
+										<button class="btn btn-dry-weight btn-primary w-100" (click)="setDryWtValue()">
 											Captured Dry Weight
 										</button>
 									</div>
 									<ng-template #dryButtonNot>
-										<div class="d-flex-1 text-center">
-											<button class="btn btn-dry-weight btn-secondary">
+										<div class="d-flex-1 text-center mx-3 my-3 my-md-0">
+											<button class="btn btn-dry-weight btn-secondary w-100">
 												Captured Dry Weight
 											</button>
 										</div>

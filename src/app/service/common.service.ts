@@ -9,16 +9,16 @@ export class DeactivationDto {
 var environment = {
 
 
-        // URL: `http://15.207.62.200:9091`,  //prod url
-        // LOGIN_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login'
+        URL: `http://15.207.62.200:9091`,  //prod url
+        LOGIN_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login'
 
 
-           LOGIN_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',
-           URL: `http://43.204.240.44:9091`  //Absec ip 
+        //    LOGIN_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',
+        //    URL: `http://43.204.240.44:9091`  //Absec ip 
 
 
         // LOGIN_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login',
-        // URL: `http://localhost:9091`
+        // URL: `http://192.168.12.41:9091`
 }
 
 @Injectable({
@@ -270,7 +270,9 @@ export class CommonService {
         getAllHelper() {
                 return this.http.get(environment.URL + '/zone/getAllHelper')
         }
+        
 
+        
         toggleDetailedSidebar() {
                 const miniSidebarElement = document.querySelector('#mini-sidebar') as HTMLDivElement;
                 if (miniSidebarElement.classList.contains('toggled')) {
@@ -345,5 +347,9 @@ export class CommonService {
         }
         getAllMrfReports(){
                 return this.http.get(environment.URL+'/get/mrf/transaction/value/'+localStorage.getItem("wcId"))
+        }
+        //Duplicate added only for Garbage Helper dropdown.....
+        getAllHelperByWc() {
+                return this.http.get(environment.URL + '/zone/get/Helper/by/' + localStorage.getItem("wcId"))
         }
 }

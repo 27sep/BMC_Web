@@ -14,7 +14,7 @@ main {
   background: #000033;
   color: #fff;
   min-height: calc(100dvh - 34px);
-  padding-bottom: 2.5rem;
+  padding-bottom: 4rem;
   padding-top: 3rem;
 }
 
@@ -192,7 +192,7 @@ thead th {
 .btn-wet-weight {
   /* background-image: linear-gradient(to right, #1ECD6D 0%, #04AB48 100%); */
   color: #fff;
-  padding: 0.7rem 3rem;
+  padding: 0.7rem 1rem;
   font-size: 1.1rem;
 }
 
@@ -506,7 +506,7 @@ thead th {
 .btn-gross-weight {
   /* background-image: linear-gradient(to right, #9149EC 0%, #6510D0 100%); */
   color: #fff;
-  padding: 0.7rem 3rem;
+  padding: 0.7rem 1.5rem;
   font-size: 1.1rem;
 }
 
@@ -520,7 +520,7 @@ thead th {
 .btn-dry-weight {
   /* background-image: linear-gradient(to right, #0391EA 0%, #0241D3 100%); */
   color: #fff;
-  padding: 0.7rem 3rem;
+  padding: 0.7rem 1.5rem;
   font-size: 1.1rem;
 }
 
@@ -534,7 +534,7 @@ thead th {
 .btn-wet-weight {
   /* background-image: linear-gradient(to right, #1ECD6D 0%, #04AB48 100%); */
   color: #fff;
-  padding: 0.7rem 3rem;
+  padding: 0.7rem 1.5rem;
   font-size: 1.1rem;
 }
 

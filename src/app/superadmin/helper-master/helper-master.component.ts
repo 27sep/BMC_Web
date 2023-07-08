@@ -123,7 +123,7 @@ export class HelperMasterComponent implements OnInit{
         }
         async remove(id: string) {
                 try {
-                        const res = await this.service.delete(`/zone/deleteHelper/${id}`)
+                        const res = await this.service.get(`/helper/deactivate/${id}`)
                         //this.form.reset()
                         // this.getList()
                         this.service.getHelperByWcId().subscribe(
