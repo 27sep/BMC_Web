@@ -48,7 +48,7 @@ export class EditActiveTripModalComponent implements OnInit {
         "tareWt": this.activeTripsEditForm.value.tare_weight,
         "tripStartReading": this.activeTripsEditForm.value.trip_start_reading,
         "tripTransactionId": this.activeTripsEditForm.value.tripId,
-        "vehicleNo": "string",
+        "vehicleNo": this.activeTripsEditForm.value.vehicle_no,
         "wetWt": this.activeTripsEditForm.value.wet_weight
       
     }

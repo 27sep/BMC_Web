@@ -1,24 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Chart, { scales } from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-dashboard-two',
   templateUrl: './dashboard-two.component.html',
   styleUrls: ['../../../common.css', './dashboard-two.component.css']
 })
-export class DashboardTwoComponent {
-
+export class DashboardTwoComponent implements OnInit{
+  constructor(private service:CommonService){}
   chart1: any;
   chart2: any;
   chart3: any;
   chart4: any;
-
+  loginResponse:any
+  mrfReportList:any=[]
   ngOnInit() {
     this.createChart1();
     this.createChart2();
     this.createChart3();
     this.createChart4();
+    this.service.getAllMrfReports().subscribe(
+      data=>{
+        this.loginResponse=data
+        this.mrfReportList=this.loginResponse.data
+      }
+    );
   }
 
   createChart1() {

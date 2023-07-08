@@ -3,21 +3,25 @@
 	<div class="page-content p-3">
 		<div class="row">
 			<div class="col-lg-3 d-flex flex-column mb-4" style="justify-content: space-between;">
+                <form [formGroup]="form">
                 <div>
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">South West Zone</option>
+                    <select name="" id="" class="form-control form-select dashboard-select-box" formControlName="zoneId" (ngModelChange)="getAllWcByZoneId()" [(ngModel)]='zoneName'>
+                        
+                        <option [value]="x.zoneId" *ngFor="let x of zoneList;">{{x.zoneName}}</option>
                     </select>
                 </div>
                 <div class="mt-4">
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">Pokhariput WC</option>
+                    <select name="" id="" class="form-control form-select dashboard-select-box" formControlName="wcId" (ngModelChange)="getMrfReportByWc()">
+                       
+                        <option [value]="x.wcId" *ngFor="let x of wcList">{{x.wcName}}</option>
                     </select>
                 </div>
+            </form>
 			</div>
 			<div class="col-lg-9 mb-4">
 				<div class="card">
 					<div class="card-body">
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-3">
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-1 stat-card">
@@ -90,7 +94,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
+                        <app-heade-dashboard-component></app-heade-dashboard-component>
 					</div>
 				</div>
 			</div>
@@ -153,24 +158,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Bailing</td>
-                                    <td class="border-end border-bottom-0">700 KG</td>
-                                    <td class="border-end border-bottom-0">1700 KG</td>
-                                    <td class="border-bottom-0">2200 KG</td>
+                                <tr *ngFor="let item of mrfReportList">
+                                    <td class="border-end border-bottom-0">{{item.goodsName}}</td>
+                                    <td class="border-end border-bottom-0">{{item.dailyMrfValue}} KG</td>
+                                    <td class="border-end border-bottom-0">{{item.weeklyMrfValue}} KG</td>
+                                    <td class="border-bottom-0">{{item.monthlyMrfValue}} KG</td>
                                 </tr>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Ready to sale</td>
-                                    <td class="border-end border-bottom-0">460 KG</td>
-                                    <td class="border-end border-bottom-0">1500 KG</td>
-                                    <td class="border-bottom-0">1800 KG</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Unsold</td>
-                                    <td class="border-end border-bottom-0">640 KG</td>
-                                    <td class="border-end border-bottom-0">1200 KG</td>
-                                    <td class="border-bottom-0">800 KG</td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                         </a>

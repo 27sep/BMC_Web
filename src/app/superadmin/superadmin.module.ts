@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SuperadminRoutingModule } from './superadmin-routing.module';
@@ -53,6 +53,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeadeDashboardComponentComponent } from './common/heade-dashboard-component/heade-dashboard-component.component';
 import { TermComponent } from './term/term.component';
 import { PolicyComponent } from './policy/policy.component';
+import { CommonService } from '../service/common.service';
 
 @NgModule({
   declarations: [
@@ -100,13 +101,17 @@ import { PolicyComponent } from './policy/policy.component';
     EditActiveTripModalComponent,
     HeadeDashboardComponentComponent,
     TermComponent,
-    PolicyComponent
+    PolicyComponent,
+    HeadeDashboardComponentComponent,
+    DashboardFourComponent
   ],
 
   entryComponents: [
     EditActiveTripModalComponent
   ],
-
+ schemas:[
+   CUSTOM_ELEMENTS_SCHEMA
+ ],
   imports: [
     CommonModule,
     SuperadminRoutingModule,
@@ -119,6 +124,9 @@ import { PolicyComponent } from './policy/policy.component';
     BrowserAnimationsModule,
     FormsModule,
     NgbModule
+  ],
+  providers:[
+    CommonService
   ]
 })
 export class SuperadminModule { }
