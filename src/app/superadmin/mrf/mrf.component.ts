@@ -54,8 +54,8 @@ export class MrfComponent implements OnInit{
              
             };
           });
-         console.log("MrfGridList",this.mrfGridList)
-         console.log("rowData",rowDataMrf)
+         // console.log("MrfGridList",this.mrfGridList)
+         // console.log("rowData",rowDataMrf)
          this.rowDataMrf=rowDataMrf;
           
         
@@ -66,7 +66,7 @@ export class MrfComponent implements OnInit{
                 // this.form.reset()
         
 
-        console.log(this.mrfList)
+        // console.log(this.mrfList)
       }
     );
     this.getAllGoods()
@@ -94,7 +94,7 @@ export class MrfComponent implements OnInit{
   getAllGoods(){
      this.service.getAllGoods(parseInt(this.wcId)).subscribe(
       data=>{
-        console.log('  goods res ::  ',data)
+        // console.log('  goods res ::  ',data)
        this.goodResponse=data
        this.goodList=this.goodResponse
        //console.log(this.goodList)
@@ -111,14 +111,14 @@ export class MrfComponent implements OnInit{
     );
   }
   getAllSubGoodByGoodId(){
-    console.log(this.form.value.goodsId)
+    // console.log(this.form.value.goodsId)
     this.service.getAllSubGoodByGoodId(this.form.value.goodsId).subscribe(
             data=>{
                     this.responseData=data
                     this.subgoodList = this.responseData   //this.responseData.data.sort((a: any, b: any) => a.subgoodsName - b.subgoodsName)
                     //this.form.value.goodsId=this.responseData.goods.goodId
                     //this.goodsName=this.responseData.goods.goodsName
-                    console.log(this.subgoodList)
+                    // console.log(this.subgoodList)
             }
     );
 }
@@ -183,10 +183,10 @@ export class MrfComponent implements OnInit{
         "wcId":localStorage.getItem("wcId")
       }
    }
-   console.log(data)
+   // console.log(data)
    this.service.saveMrfData(data).subscribe(
     data=>{
-      window.alert("Mrf data saved successfully")
+      this.toastService.showSuccess("Mrf data saved successfully")
         this.mrfGridResponse = data
         this.mrfGridList = this.mrfGridResponse.data
         const rowDataMrf =   this.mrfGridList.map((item: { goods: any; wcId: any; interMaterial: any; mrfDesc: any; quntaum: any; subGood: any; createdDate: any; updateDate:any; }) => {
@@ -202,8 +202,8 @@ export class MrfComponent implements OnInit{
 
           };
         });
-       console.log("MrfList",this.mrfGridList)
-       console.log("rowData",rowDataMrf)
+       // console.log("MrfList",this.mrfGridList)
+       // console.log("rowData",rowDataMrf)
        this.rowDataMrf=rowDataMrf;
         
       
@@ -214,7 +214,7 @@ export class MrfComponent implements OnInit{
               // this.form.reset()
       },
       error => {
-              window.alert("something went wrong")
+        this.toastService.showError("something went wrong")
       }
     
    );   
@@ -222,7 +222,7 @@ export class MrfComponent implements OnInit{
    this.form.reset()
   }
   getGoodId() {
-    console.log(this.form.value)
+    // console.log(this.form.value)
   }
   async remove(id: string) {
     try {
@@ -233,14 +233,14 @@ export class MrfComponent implements OnInit{
     }
 }
 onRowClicked(item:any){
-  alert('Grid row selected'+this.rowDataMrf);
+  // alert('Grid row selected'+this.rowDataMrf);
 }
 updateData(item: any) {
  // alert('hi');
   this.isUpdate = true
   this.isAdd = false
-  console.log(item)
-  console.log(item.goodssubId)
+  // console.log(item)
+  // console.log(item.goodssubId)
   this.goodsName = item.goods.goodsName
   this.form.patchValue({
           goodsId: item.goods.goodsId,
@@ -268,7 +268,7 @@ cancel() {
 }
 
 updateMrf() {
-  console.log("Form Value"+this.form.value)
+  // console.log("Form Value"+this.form.value)
   this.service.updateMrf(this.form.value).subscribe(
           data => {
             this.mrfGridResponse = data
@@ -285,8 +285,8 @@ updateMrf() {
                 
               };
             });
-           console.log("MrfGridList",this.mrfGridList)
-           console.log("rowData",rowDataMrf)
+           // console.log("MrfGridList",this.mrfGridList)
+           // console.log("rowData",rowDataMrf)
            this.rowDataMrf=rowDataMrf;
             
           
@@ -297,7 +297,7 @@ updateMrf() {
                   // this.form.reset()
           },
           error => {
-                  window.alert("something went wrong")
+            this.toastService.showError("something went wrong")
           }
   );
 
