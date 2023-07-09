@@ -2,10 +2,12 @@
 <main class="container-fluid">
 	<div class="page-content p-3">
 		<div class="row">
-			<div class="col-lg-3 sidebar-parent">
-				<app-sidebar></app-sidebar> 
+			<div class="col-xl-3 sidebar-parent">
+				<div class="d-none d-xl-block">
+					<app-sidebar></app-sidebar>
+				</div> 
 			</div>
-			<div class="col-lg-9 app-content">
+			<div class="col-xl-9 app-content mt-4 mt-xl-0">
 				<div class="card">
 					<div class="card-body">
 						<app-heade-dashboard-component></app-heade-dashboard-component>
@@ -27,7 +29,7 @@
 							<div class="card-body">
 								<form [formGroup]="form">
 									<div class="row">
-										<div class="col-md-6">
+										<div class="col-md-6 mb-3 mb-md-0" >
 											<div class="d-flex align-items-center w-100">
 												<div>
 													Goods Name<span class="text-danger">*</span>
@@ -48,8 +50,8 @@
 											</div>
 										</div>
                                         </div>
-                                        <div class="row mt-3">
-										<div class="col-md-6">
+                                        <div class="row mt-3"  >
+										<div class="col-md-6"  >
 											<div class="d-flex align-items-center w-100">
 												<div>
 													Description
@@ -86,6 +88,7 @@
 								</button>
 							</div>
 						</div> -->
+						<div  class= "w-100" style="overflow-x: auto;">
 						<table class="table table-bordered table-striped">
 							<thead class="bg-primary text-white text-center">
 								<tr>
@@ -120,7 +123,11 @@
                                                                 </tr>
 							</tbody>
 						</table>
+						
 					</div>
+
+					</div>
+					
 				</div>
 			</div>
 		</div>
