@@ -12,7 +12,8 @@ export class HeaderComponent {
     sidebarParentElement && sidebarParentElement.classList.toggle('d-none');
     const appContentElement = document.querySelector('.app-content') as HTMLDivElement;
     appContentElement && appContentElement.classList.toggle('col-lg-9');
-    appContentElement && appContentElement.classList.toggle('col-12');
+    appContentElement && appContentElement.classList.toggle('col-xl-9');
+    appContentElement && appContentElement.classList.toggle('col-lg-12');
     const miniSidebarElement = document.querySelector('#mini-sidebar') as HTMLDivElement;
     miniSidebarElement && miniSidebarElement.classList.toggle('toggled');
     const pageContentElement = document.querySelector('.page-content') as HTMLDivElement;

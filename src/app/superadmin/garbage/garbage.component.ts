@@ -15,7 +15,6 @@ import { ToastService } from 'src/app/service/toast.service';
 export class GarbageComponent implements OnInit {
 
   constructor(private service: CommonService, private formBuilder: FormBuilder, private httpClient: HttpClient, private toastService: ToastService) {
-    
     this.wcId = localStorage.getItem("wcId");
     this.getRouteList()
    }
@@ -37,10 +36,12 @@ export class GarbageComponent implements OnInit {
   errorResponse:any
   helperList:any=[]
   loginResponse:any
+  driverList:any=[]
   form = new FormGroup({
     vehicleNumber: new FormControl,
     driverDlNo: new FormControl,
     driverName: new FormControl,
+    driverId: new FormControl,
     routeName: new FormControl,
     tripStartReading: new FormControl,
     tripEndReading: new FormControl,
@@ -54,13 +55,15 @@ export class GarbageComponent implements OnInit {
   });
   wcId: any = 0;
   ngOnInit() {
-    this.setVehicleNumber()
-    this.service.getAllHelperByWcId().subscribe(
-      data=>{
-        this.loginResponse=data
-         this.helperList=this.loginResponse.data
-      }
-    );
+    // this.setVehicleNumber()
+    this.service.getAllHelperByWcId().subscribe((data) => {
+      this.loginResponse = data;
+      this.helperList = this.loginResponse.data;
+    });
+    this.service.getAllDriverList().subscribe((data) => {
+      this.helperList = data;
+      this.driverList = data;
+    });
     this.service.getActiveTrip().subscribe(
       data => {
         this.activeTripResponse = data
@@ -143,7 +146,19 @@ export class GarbageComponent implements OnInit {
   }
 
  async setVehicleNumber() {
-    console.log(this.form.value.vehicleNumber)
+
+    const vehicleNumber: any = this.form.value.vehicleNumber?.trim();
+    if (!vehicleNumber) {
+      this.toastService.showWarning(`Please enter a vehicle number.`);
+      return;
+    }
+
+    this.form.reset();
+
+    this.form.patchValue({
+      vehicleNumber: vehicleNumber
+    });
+
     this.service.getVehicleByVehicleNumber(this.form.value.vehicleNumber).subscribe(
       data => {
         this.vehcileDataResponse = data
@@ -151,7 +166,7 @@ export class GarbageComponent implements OnInit {
         this.form.patchValue({
           vehicleNumber: this.vehcileDataResponse.data.vehicleNo,
           driverDlNo: this.vehcileDataResponse.data.driver.dlNo,
-          driverName: this.vehcileDataResponse.data.driver.driverName,
+          driverId:this.vehcileDataResponse.data.driver.driverId,
           routeName: this.vehcileDataResponse.data.route.routeName,
           tripStartReading: this.vehcileDataResponse.data.tripStartReading,
           tripEndReading:  this.vehcileDataResponse.data.tripEndReading,
@@ -164,6 +179,7 @@ export class GarbageComponent implements OnInit {
         })
       },
       error => {
+        this.toastService.showError(error.error.message);
       }
     );
     this.service.getTripByVehicleNumber(this.form.value.vehicleNumber).subscribe(
@@ -173,7 +189,8 @@ export class GarbageComponent implements OnInit {
         this.form.patchValue({
           vehicleNumber: this.vehcileDataResponse.data.vehicleNo,
           driverDlNo: this.vehcileDataResponse.data.driver.dlNo,
-          driverName: this.vehcileDataResponse.data.driver.driverName,
+          driverName: this.tripResponse.data.driver.driverName,
+          driverId:this.tripResponse.data.driver.driverId,
           routeName: this.vehcileDataResponse.data.route.routeName,
           tripStartReading: this.tripResponse.data.tripStartReading,
           tripEndReading: this.tripResponse.data.tripEndReading,
@@ -263,7 +280,20 @@ export class GarbageComponent implements OnInit {
       this.tripStartReadingImgFile = file;
   }
 
-  createTrip(){
+  getMimeType(header: string): string {
+    switch (header) {
+      case '89504e47':
+        return 'image/png';
+      case 'ffd8ffe0':
+      case 'ffd8ffe1':
+      case 'ffd8ffe2':
+        return 'image/jpeg';
+      default:
+        return '';
+    }
+  }
+
+  async createTrip(){
 
     const vehicleNumberElement = document.querySelector('#vehicleNumber') as HTMLInputElement;
     const vehicleNumber = vehicleNumberElement.value.trim();
@@ -284,6 +314,39 @@ export class GarbageComponent implements OnInit {
       return;
     }
 
+    const tripStartFileInputElement = document.getElementById('tripStartReadingPictureInput') as HTMLInputElement;
+
+    const allowedTypes = ['.jpg', '.jpeg', '.png'];
+    const fileType = this.tripStartReadingImgFile.name.substring(this.tripStartReadingImgFile.name.lastIndexOf('.')).toLowerCase();
+    if (!allowedTypes.includes(fileType)) {
+      this.toastService.showWarning('Unsupported file type. Only PNG and JPEG files are allowed.');
+      tripStartFileInputElement.value = '';
+      return;
+    }
+
+    const allowedMimeTypes = ['image/jpeg', 'image/png'];
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const arr = new Uint8Array(reader.result as ArrayBuffer).subarray(0, 4);
+      let header = '';
+      for (let i = 0; i < arr.length; i++) {
+        header += arr[i].toString(16);
+      }
+      const mimeType = this.getMimeType(header);
+      if (!allowedMimeTypes.includes(mimeType)) {
+        this.toastService.showWarning('Unsupported file type. Only PNG and JPEG files are allowed.');
+        tripStartFileInputElement.value = '';
+        return;
+      }
+    };
+    await reader.readAsArrayBuffer(this.tripStartReadingImgFile);
+
+    if (this.tripStartReadingImgFile.size > 15 * 1024 * 1024) {
+      this.toastService.showWarning('Max file size allowed is: 15 MB');
+      tripStartFileInputElement.value = '';
+      return;
+    }
+    
     const driverDlNoElement = document.querySelector('#driverDlNo') as HTMLInputElement;
     const driverDlNo = driverDlNoElement.value.trim();
     if (driverDlNo === '') {
@@ -291,9 +354,9 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const driverNameElement = document.querySelector('#driverName') as HTMLInputElement;
-    const driverName = driverNameElement.value.trim();
-    if (driverName === '') {
+    const driverIdElement = document.querySelector('#driverId') as HTMLInputElement;
+    const driverId = driverIdElement.value.trim();
+    if (driverId === '') {
       this.toastService.showWarning('Driver name is required.');
       return;
     }
@@ -332,10 +395,12 @@ export class GarbageComponent implements OnInit {
           console.log(this.vehcileDataResponse);
 
           const data={
-            "driver":this.vehcileDataResponse.data.driver,
+            "driver": {
+              "driverId":this.form.value.driverId
+            },
             "route": this.vehcileDataResponse.data.route,
             "tripStartReading": this.form.value.tripStartReading,
-            "tripStartReadingImg": fileUrl,
+            "tripStartReadingImg": fileName,
             "vehicleNo": this.vehcileDataResponse.data.vehicleNo,
             "helper": {
               "helperId":this.form.value.helperId
@@ -492,12 +557,13 @@ export class GarbageComponent implements OnInit {
               
             },
             error=>{
-              console.log(error)
               this.errorResponse=error
-              this.toastService.showError(this.errorResponse.error.message)
+              this.toastService.showError(this.errorResponse?.error?.message)
             }
           );
 
+        }, (error) => {
+          this.toastService.showError('Error occured while uploading file.');
         });
   }
 
@@ -524,9 +590,9 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const driverNameElement = document.querySelector('#driverName') as HTMLInputElement;
-    const driverName = driverNameElement.value.trim();
-    if (driverName === '') {
+    const driverIdElement = document.querySelector('#driverId') as HTMLInputElement;
+    const driverId = driverIdElement.value.trim();
+    if (driverId === '') {
       this.toastService.showWarning('Driver name is required.');
       return;
     }
@@ -712,9 +778,9 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const driverNameElement = document.querySelector('#driverName') as HTMLInputElement;
-    const driverName = driverNameElement.value.trim();
-    if (driverName === '') {
+    const driverIdElement = document.querySelector('#driverId') as HTMLInputElement;
+    const driverId = driverIdElement.value.trim();
+    if (driverId === '') {
       this.toastService.showWarning('Driver name is required.');
       return;
     }
@@ -754,12 +820,12 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    // const dryWeightValueElement = document.querySelector('#dryWeightValue') as HTMLInputElement;
-    // const dryWeightValue = dryWeightValueElement.value.trim();
-    // if (dryWeightValue === '') {
-    //   this.toastService.showWarning('Dry weight is required.');
-    //   return;
-    // }
+    const dryWeightValueElement = document.querySelector('#dryWeightValue') as HTMLInputElement;
+    const dryWeightValue = dryWeightValueElement.value.trim();
+    if (dryWeightValue === '') {
+      this.toastService.showWarning('Dry weight is required.');
+      return;
+    }
 
     const data={
       "tareWt": this.form.value.tareWeightValue,
@@ -845,9 +911,9 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const driverNameElement = document.querySelector('#driverName') as HTMLInputElement;
-    const driverName = driverNameElement.value.trim();
-    if (driverName === '') {
+    const driverIdElement = document.querySelector('#driverId') as HTMLInputElement;
+    const driverId = driverIdElement.value.trim();
+    if (driverId === '') {
       this.toastService.showWarning('Driver name is required.');
       return;
     }
@@ -1029,7 +1095,7 @@ export class GarbageComponent implements OnInit {
     this.tripEndReadingImgFile = file;
   }
 
-  endTrip(){
+  async endTrip(){
 
     const vehicleNumberElement = document.querySelector('#vehicleNumber') as HTMLInputElement;
     const vehicleNumber = vehicleNumberElement.value.trim();
@@ -1052,9 +1118,9 @@ export class GarbageComponent implements OnInit {
       return;
     }
     
-    const driverNameElement = document.querySelector('#driverName') as HTMLInputElement;
-    const driverName = driverNameElement.value.trim();
-    if (driverName === '') {
+    const driverIdElement = document.querySelector('#driverId') as HTMLInputElement;
+    const driverId = driverIdElement.value.trim();
+    if (driverId === '') {
       this.toastService.showWarning('Driver name is required.');
       return;
     }
@@ -1075,6 +1141,39 @@ export class GarbageComponent implements OnInit {
 
     if (!this.tripEndReadingImgFile) {
       this.toastService.showWarning("Please select an image for trip end reading.");
+      return;
+    }
+
+    const tripEndFileInputElement = document.getElementById('tripEndReadingPictureInput') as HTMLInputElement;
+
+    const allowedTypes = ['.jpg', '.jpeg', '.png'];
+    const fileType = this.tripEndReadingImgFile.name.substring(this.tripEndReadingImgFile.name.lastIndexOf('.')).toLowerCase();
+    if (!allowedTypes.includes(fileType)) {
+      this.toastService.showWarning('Unsupported file type. Only PNG and JPEG files are allowed.');
+      tripEndFileInputElement.value = '';
+      return;
+    }
+
+    const allowedMimeTypes = ['image/jpeg', 'image/png'];
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const arr = new Uint8Array(reader.result as ArrayBuffer).subarray(0, 4);
+      let header = '';
+      for (let i = 0; i < arr.length; i++) {
+        header += arr[i].toString(16);
+      }
+      const mimeType = this.getMimeType(header);
+      if (!allowedMimeTypes.includes(mimeType)) {
+        this.toastService.showWarning('Unsupported file type. Only PNG and JPEG files are allowed.');
+        tripEndFileInputElement.value = '';
+        return;
+      }
+    };
+    await reader.readAsArrayBuffer(this.tripEndReadingImgFile);
+
+    if (this.tripStartReadingImgFile.size > 15 * 1024 * 1024) {
+      this.toastService.showWarning('Max file size allowed is: 15 MB');
+      tripEndFileInputElement.value = '';
       return;
     }
 
@@ -1195,6 +1294,8 @@ export class GarbageComponent implements OnInit {
             }
           );
 
+        }, (error) => {
+          this.toastService.showError('Error occured while uploading file.');
         });
   }
 

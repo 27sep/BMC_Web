@@ -9,12 +9,12 @@ export class DeactivationDto {
 var environment = {
 
 
-        // URL: `http://15.207.62.200:9091`,  //prod url
-        // LOGIN_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login'
+        URL: `http://15.207.62.200:9091`,  //prod url
+        LOGIN_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login'
 
 
-           LOGIN_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',
-           URL: `http://43.204.240.44:9091`  //Absec ip 
+        //    LOGIN_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',
+        //    URL: `http://43.204.240.44:9091`  //Absec ip 
 
 
         // LOGIN_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',

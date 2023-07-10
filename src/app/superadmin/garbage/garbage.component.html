@@ -56,8 +56,15 @@
 															Vehicle Number<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
-															<input formControlName="vehicleNumber" type="text" name=""
-																id="vehicleNumber" class="form-control" (input)="setVehicleNumber()">
+															<div class="input-group">
+																<input formControlName="vehicleNumber" type="text" name=""
+																id="vehicleNumber" class="form-control">
+																<div class="input-group-item">
+																	<button class="btn btn-light rounded-0" (click)="setVehicleNumber()">
+																		<i class="fas fa-arrow-right"></i>
+																	</button>
+																</div>
+															</div>
 														</div>
 													</div>
 													<div class="row mt-3">
@@ -74,7 +81,7 @@
 															Trip Start Reading Picture<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
-															<input type="file" name="" id="" class="form-control"
+															<input type="file" name="" id="tripStartReadingPictureInput" class="form-control"
 																accept="image/*" (change)="onTripStartFileSelected($event)">
 														</div>
 													</div>
@@ -92,7 +99,7 @@
 															Trip End Reading Picture
 														</div>
 														<div class="col-md-9">
-															<input type="file" name="" id="" class="form-control"
+															<input type="file" name="" id="tripEndReadingPictureInput" class="form-control"
 																accept="image/*" (change)="onTripEndFileSelected($event)">
 														</div>
 													</div>
@@ -129,8 +136,13 @@
 															Driver Name<span class="text-danger">*</span>
 														</div>
 														<div class="col-md-9">
-															<input type="text" name="" id="driverName" class="form-control"
-																formControlName="driverName">
+															<!-- <input type="text" name="" id="driverName" class="form-control"
+																formControlName="driverName"> -->
+																<select 
+																class="form-select" formControlName="driverId" id="driverId">
+																<option value="" disabled selected>--Select--</option>
+																<option [value]="item.driverId" *ngFor="let item of driverList">{{item.driverName}}</option>
+															</select>
 														</div>
 													</div>
 													<div class="row mt-3">
@@ -166,28 +178,28 @@
 													<div class="d-block d-md-flex justify-content-md-end gap-2">
 														<div class="trip-button text-end mt-4 mt-md-5 pt-2"
 															*ngIf="tripStartButton; else tripStratButtonNot">
-															<button class="btn btn-trip btn-warning w-100"
+															<button type="button" class="btn btn-trip btn-warning w-100"
 																(click)="createTrip()">
 																Trip Start
 															</button>
 														</div>
 														<ng-template #tripStratButtonNot>
 															<div class="trip-button text-end mt-4 mt-md-5 pt-2">
-																<button class="btn btn-trip btn-secondary w-100">
+																<button type="button" class="btn btn-trip btn-secondary w-100">
 																	Trip Start
 																</button>
 															</div>
 														</ng-template>
 														<div class="trip-button text-end mt-2 mt-md-5 pt-2"
 															*ngIf="tripEndButton; else tripEndButtonNot">
-															<button class="btn btn-trip btn-primary w-100"
+															<button type="button" class="btn btn-trip btn-primary w-100"
 																(click)="endTrip()">
 																Trip End
 															</button>
 														</div>
 														<ng-template #tripEndButtonNot>
 															<div class="trip-button text-end mt-2 mt-md-5 pt-2">
-																<button class="btn btn-trip btn-secondary  w-100">
+																<button type="button" class="btn btn-trip btn-secondary  w-100">
 																	Trip End
 																</button>
 															</div>
@@ -262,38 +274,38 @@
 								<div class="mt-4 d-md-flex justify-space-md-between mb-lg-4">
 									<div class="d-flex-1 text-start mx-3"
 										*ngIf="grossWeightCapturedButton; else grossWeightCapturedButtonNot">
-										<button class="btn btn-gross-weight btn-primary w-100" (click)="setGrossWtValue()">
+										<button type="button" class="btn btn-gross-weight btn-primary w-100" (click)="setGrossWtValue()">
 											Gross Weight
 										</button>
 									</div>
 									<ng-template #grossWeightCapturedButtonNot>
 										<div class="d-flex-1 text-center mx-3">
-											<button class="btn btn-gross-weight btn-secondary w-100">
+											<button type="button" class="btn btn-gross-weight btn-secondary w-100">
 												Gross Weight
 											</button>
 										</div>
 									</ng-template>
 									<div class="d-flex-1 text-end mx-3 mt-3 mt-md-0"
 										*ngIf="wetWeightCapturedButton; else wetWeightCapturedButtonNot">
-										<button class="btn btn-wet-weight btn-primary w-100" (click)="setWetWtValue()">
+										<button type="button" class="btn btn-wet-weight btn-primary w-100" (click)="setWetWtValue()">
 											Captured Wet Weight
 										</button>
 									</div>
 									<ng-template #wetWeightCapturedButtonNot>
 										<div class="d-flex-1 text-center mx-3 mt-3 mt-md-0">
-											<button class="btn btn-wet-weight btn-secondary w-100">
+											<button type="button" class="btn btn-wet-weight btn-secondary w-100">
 												Captured Wet Weight
 											</button>
 										</div>
 									</ng-template>
 									<div class="d-flex-1 text-center mx-3 mt-3 mt-md-0" *ngIf="dryButton; else dryButtonNot">
-										<button class="btn btn-dry-weight btn-primary w-100" (click)="setDryWtValue()">
+										<button type="button" class="btn btn-dry-weight btn-primary w-100" (click)="setDryWtValue()">
 											Captured Dry Weight
 										</button>
 									</div>
 									<ng-template #dryButtonNot>
 										<div class="d-flex-1 text-center mx-3 my-3 my-md-0">
-											<button class="btn btn-dry-weight btn-secondary w-100">
+											<button type="button" class="btn btn-dry-weight btn-secondary w-100">
 												Captured Dry Weight
 											</button>
 										</div>
