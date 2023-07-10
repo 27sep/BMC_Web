@@ -2,10 +2,12 @@
 <main class="container-fluid">
 	<div class="page-content p-3">
 		<div class="row">
-			<div class="col-lg-3 sidebar-parent">
-				<app-sidebar></app-sidebar>
+			<div class="col-xl-3 sidebar-parent">
+				<div class="d-none d-xl-block">
+					<app-sidebar></app-sidebar>
+				</div> 
 			</div>
-			<div class="col-lg-9 app-content">
+			<div class="col-xl-9 app-content mt-4 mt-xl-0">
 				<div class="card">
 					<div class="card-body">
 						<app-heade-dashboard-component></app-heade-dashboard-component>
@@ -48,7 +50,7 @@
 										<div class="card-body">
 											<form [formGroup]="form">
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-6 mb-3 mb-md-0">
 														<div class="row">
 															<div class="col-md-3 d-flex align-items-center pe-0">
 																Item Category Name
@@ -65,17 +67,17 @@
 																<option [value]="x.itemCategoryId" *ngFor="let x of itemCategoryList;">{{ x.categoryName }}</option> -->
 																</select>
 															</div>
-															<div class="row mt-3"></div>
+															<div class="row mt-3 mb-3 mb-md-0"></div>
 														</div>
 														<div class="row">
 															<div class="col-md-3 d-flex align-items-center pe-0">
 																Item Quantity
 															</div>
-															<div class="col-md-6">
+															<div class="col-md-6 mb-3 mb-md-0">
 																<input type="text" name="" id="" class="form-control"
 																	formControlName="itemQuantity">
 															</div>
-															<div class="col-md-3">
+															<div class="col-md-3 mb-3 mb-md-0">
 																<select name="" id="units"
 																	class="form-control form-select"
 																	formControlName="unitId">
@@ -133,12 +135,12 @@
 														</div>
 													</div> -->
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-6 mb-3 mb-md-0">
 														<div class="row">
 															<div class="col-md-3 d-flex align-items-center pe-0">
 																Item Name
 															</div>
-															<div class="col-md-9">
+															<div class="col-md-9 mb-3 mb-md-0">
 																<select name="" id="" class="form-control form-select"
 																	formControlName="itemId">
 																	<option value="" disabled selected>Select Item Name
@@ -149,20 +151,20 @@
 																</select>
 															</div>
 														</div>
-														<div class="row mt-3">
+														<div class="row mt-3 mb-3 mb-md-0">
 															<div class="col-md-3 d-flex align-items-center pe-0">
 																Date
 															</div>
-															<div class="col-md-9">
+															<div class="col-md-9 mb-3 mb-md-0">
 																<input type="date" name="" id="" class="form-control"
 																	formControlName="itemPurchaseDate">
 															</div>
 														</div>
-														<div class="row mt-3">
+														<div class="row mt-3 mb-3 mb-md-0">
 															<div class="col-md-3 d-flex align-items-center pe-0">
 																Upload Bill
 															</div>
-															<div class="col-md-9">
+															<div class="col-md-9 mb-3 mb-md-0">
 																<input type="file" name="" id="" class="form-control"
 																	formControlName="uploadBill">
 															</div>
@@ -337,12 +339,12 @@
 									<div class="card-body">
 
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-6 mb-3 mb-md-0">
 												<div class="row">
 													<div class="col-md-3 d-flex align-items-center pe-0">
 														Item Name
 													</div>
-													<div class="col-md-9">
+													<div class="col-md-9 mb-3 mb-md-0">
 														<select name="" id="" class="form-control form-select"
 															formControlName="itemId">
 															<option value="" disabled selected>Select Item Name</option>
@@ -351,26 +353,26 @@
 														</select>
 													</div>
 												</div>
-												<div class="row mt-3">
+												<div class="row mt-3 mb-3 mb-md-0">
 													<div class="col-md-3 d-flex align-items-center pe-0">
 														Issue Date
 													</div>
-													<div class="col-md-9">
+													<div class="col-md-9 mb-3 mb-md-0">
 														<input formControlName="issueDate" type="date" name="" id=""
 															class="form-control">
 													</div>
 												</div>
 											</div>
-											<div class="col-md-6">
+											<div class="col-md-6 mb-3 mb-md-0">
 												<div class="row">
 													<div class="col-md-3 d-flex align-items-center pe-0">
 														Select Quantity
 													</div>
-													<div class="col-md-3">
+													<div class="col-md-3 mb-3 mb-md-0">
 														<input type="text" name="" id="" class="form-control"
 															formControlName="itemQuantity">
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-6 mb-3 mb-md-0">
 														<select class="form-select" formControlName="unitId">
 															<option [value]="item.unitId" *ngFor="let item of unitList" selected>{{item.unit}}</option>
 															<!-- <option [value]="x.routeId" *ngFor="let x of routeList;">{{x.routeName}}</option> -->
