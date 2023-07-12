@@ -138,10 +138,7 @@ export class PitViewComponent {
     private toastr: ToastrService,
     private route:Router
    ) {
-  
-    console.log( '  MCC ID  ::::: {} ', this.mccId);
-    this.pitPayload.payload.mccId = this.mccId;
-   
+    this.pitPayload.payload.mccId = this.mccId;  
   }
 
   form = new FormGroup({
@@ -196,24 +193,20 @@ export class PitViewComponent {
   }
   subscriptions:Subscription[] = [];
   ngOnInit(): void {
-    console.log('   NG ON INIT  ::   {} ',this.pitPayload);
       this.pitService.selectMccId.subscribe( (val) => {
         this.mccId = val;
         this.pitPayload.payload.mccId = this.mccId;
         this.onRefresh();
         this.getPitStageDetails();
       });
-
     this.updateSubscription = interval(10000).subscribe(
       (val) => { this.onRefresh()});
-   
   }
 
   ngOnDestroy(){
     this.mccId = 0;
  //   this.updateSubscription?.unsubscribe();
  //   this.pitService.selectMccId?.unsubscribe();
-
   }
   greaterThan(pit : any){
     if(pit.daysCounter >= 0){
@@ -231,7 +224,6 @@ export class PitViewComponent {
   }
 
   getPitStageDetails(){
-   // console.log('  PIT stages  ', this.pitAllStages);
     this.pitService
       .getAllPitStagesStatus(this.pitAllStages)
       .subscribe((response) => (this.allPitStages = response));
@@ -259,7 +251,6 @@ export class PitViewComponent {
   }
   pitName : string = '';
   showPitHistoryModal(pit : any){
-   // console.log('  Show Pit Histiry for PIt :: {} ', pit);
     this.pitName = pit.pitName;
     this.pitHistoryStatus=true;
   }
@@ -317,13 +308,9 @@ export class PitViewComponent {
     expectedTrSecondTurn:Boolean=false;
 
   onFetchPitHistoryDetails(pit :any){
-   // console.log(" PIT ::::    ",pit);
-   // console.log('  Show Pit Histiry for PIt :: {} ', pit);
     this.pitName = pit.pitName;
     this.pitHistoryReq.pitId = pit.pitId;
     this.pitHistoryReq.batchId = pit.batch;
-   // console.log("  PIT History :: {} ", this.pitHistoryReq);
-   // console.log("  PIT  :: {} ",pit.pitStatus.pitConfigCode);
     console.log( pitNoActionStatusEnum.PIT_EMPTY_GARBAGE_COL_NOT_STARTED.toString()+" *****  PIT ******** :: {} ",pit.pitStatus.pitConfigCode.toString() );
     if( pit.pitStatus.pitConfigCode.toString() == pitNoActionStatusEnum.PIT_EMPTY_GARBAGE_COL_NOT_STARTED.toString() || 
         pit.pitStatus.pitConfigCode.toString() == pitNoActionStatusEnum.PIT_EMPTY_AFTER_MIXED_UP.toString() ||

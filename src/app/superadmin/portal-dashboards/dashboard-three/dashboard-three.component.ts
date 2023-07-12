@@ -1,6 +1,10 @@
+import { DatePipe } from "@angular/common";
 import { Component } from "@angular/core";
 import Chart, { scales } from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { ReportGenerate } from "src/app/model/pit.model";
+import { CommonService } from "src/app/service/common.service";
+import { ReportService } from "src/app/service/report.service";
 
 @Component({
   selector: "app-dashboard-three",
@@ -13,53 +17,184 @@ export class DashboardThreeComponent {
   chart3: any;
   chart4: any;
 
+  role: any = ''
+  zoneList: any = []
+  zoneSelectId: any = 0
+  wcSelectId: any = 0
+  wcList: any
+  zoneId: any
+  wcId: any
+  garbageFromDate: string = "";
+  garbageToDate: string = "";
+  totalGrossWeight : number = 0;
+  totalDryWeight : number = 0;
+  totalWetWeight : number = 0;
+  garbageRes : any[] = [];
+  totalGarbageWt : any[] = [];
+
+  payloadReport: ReportGenerate = {
+    reportType: "GARBAGE",
+    type: "MONTHLY",
+    fromDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "",
+    toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "",
+    wcId: 0,
+    reportName: "GARBAGE"
+  }
+
+  constructor(private datePipe: DatePipe, private service: CommonService, private reportService: ReportService){
+    this.role = localStorage.getItem('role');
+  }
+
   ngOnInit() {
-    this.createChart1();
+    this.getZones();
+    this.createChart1([0,0,0])
     this.createChart2();
-    this.createChart3();
+    this.createChart3([0,0,0]);
     this.createChart4();
+  }
+
+  getZones() {
+    try {
+      this.service.getZoneAllData()
+        .subscribe((response) => {
+          if (this.role == 'bmcadmin') {
+            this.zoneList = response
+          } else if (this.role == 'wcuser') {
+            let tempArr: any = []
+            tempArr = response
+            this.zoneList.push(tempArr.filter((temp: any) => temp.zoneId == localStorage.getItem('zoneId'))[0]);
+            const e = new Event("change");
+            const element = document.querySelector('#zoneId')
+            element?.dispatchEvent(e);
+          }
+
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  getWcListByZoneId() {
+    try {
+      this.service.getWcListByZoneId(this.zoneSelectId)
+        .subscribe((response: any) => {
+          if (this.role == 'bmcadmin') {
+            this.wcList = response.data
+          } else if (this.role == 'wcuser') {
+            let tempArr: any = []
+            tempArr = response.data
+            this.wcList.push(tempArr.filter((temp: any) => temp.wcId == localStorage.getItem('wcId'))[0])
+            const e = new Event("change");
+            const element = document.querySelector('#wcId')
+            element?.dispatchEvent(e);
+          }
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  onZoneSelect(ev: any) {
+    if(ev.target.value !== 'undefined'){
+      this.zoneSelectId = ev.target.value
+    }else{
+      this.zoneSelectId = this.zoneList[0].zoneId;
+    }
+    console.log(ev)
+    this.wcList = []
+    this.getWcListByZoneId();
+  }
+
+  onWcSelect(ev: any) {
+    if(ev.target.value !== 'undefined'){
+      this.wcSelectId = ev.target.value;
+    }else{
+      this.wcSelectId = this.wcList[0].wcId;
+    }
+    this.payloadReport.wcId = this.wcSelectId;
+    this.payloadReport.fromDate = this.payloadReport.fromDate ? this.payloadReport.fromDate : this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    this.payloadReport.toDate = this.payloadReport.toDate ? this.payloadReport.toDate : this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    this.datasetChart1();
+  }
+
+  onGarbageFromChange(ev: any){
+    console.log(ev.target.value);
+    this.payloadReport.fromDate = ev.target.value
+    this.payloadReport.toDate = ev.target.value
+    this.datasetChart1();
+  }
+
+  onGarbageToChange(ev: any){
+    console.log(ev.target.value);
+    this.payloadReport.fromDate = ev.target.value
+    this.payloadReport.toDate = ev.target.value
+    this.datasetChart1();
   }
 
   randomScalingFactor() {
     return Math.round(Math.random() * 100);
   }
 
-  createChart1() {
+  datasetChart1(){
+    this.totalGarbageWt = [];
+    try {
+      this.reportService.getGarbageReport(this.payloadReport)
+        .subscribe((response:any) => {
+          this.garbageRes = []
+        let  garbageRs = response
+        let grossWt = 0;
+        let dryWt = 0;
+        let wetWt = 0;
+        //Garbage Wt
+        grossWt = garbageRs.response.GARBAGETOTAL._2[0].totalGrossWt;
+        dryWt = garbageRs.response.GARBAGETOTAL._2[0].totalDryWt;
+        wetWt = garbageRs.response.GARBAGETOTAL._2[0].totalWetWt;
+        this.totalGrossWeight = grossWt
+        this.totalDryWeight = dryWt
+        this.totalWetWeight = wetWt
+        console.log(garbageRs);
+        garbageRs.response.GARBAGE._1?.Completed?.forEach((item:any)=> {
+          this.garbageRes.push(item);
+        })
+        garbageRs.response.GARBAGE._1?.Created?.forEach((item:any)=> {
+          this.garbageRes.push(item);
+        })
+        garbageRs.response.GARBAGE._1?.Gross_Collected?.forEach((item:any)=> {
+          this.garbageRes.push(item);
+        })
+        garbageRs.response.GARBAGE._1?.Captured_Wet_Weight?.forEach((item:any)=> {
+          this.garbageRes.push(item);
+        })
+        garbageRs.response.GARBAGE._1?.Captured_Dry_Weight?.forEach((item:any)=> {
+          this.garbageRes.push(item);
+        })
+        console.log(this.garbageRes);
+        this.totalGarbageWt = [grossWt,dryWt,wetWt];
+        this.createChart1([grossWt,dryWt,wetWt])
+        this.createChart3([grossWt,dryWt,wetWt]);
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  
+
+  createChart1(dataArr: number[]) {
+    this.garbageFromDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    this.garbageToDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    if (this.chart1 != null && this.chart1 != undefined) {
+      this.chart1.destroy()
+    }
     this.chart1 = new Chart("chart-46cfc0cf-8596-47ba-96b0-91a8c671c047", {
       type: "doughnut",
       data: {
-        labels: ["Package", "Unsold", "Sold"],
-        // datasets: [
-        //   {
-        //     data: [100, 60, 40],
-        //     backgroundColor: ["#0FA8FC", "#E93228", "#18D87F"],
-        //     borderWidth: 0
-        //   },
-        // ],
+        labels: ["GrossWeight", "DryWeight", "WetWeight"],
         datasets: [
           {
-            data: [
-              100, 0, 0
-            ],
-            backgroundColor: [
-              "#0FA8FC", "#E93228", "#18D87F"
-            ]
-          },
-          {
-            data: [
-              60, 40, 0
-            ],
-            backgroundColor: [
-              "#E93228", "#E8E8E8", "#E8E8E8",
-            ],
-          },
-          {
-            data: [
-              40, 60, 0
-            ],
-            backgroundColor: [
-              "#18D87F", "#E8E8E8", "#E8E8E8"
-            ],
+            data: dataArr,
+            backgroundColor: ["#0FA8FC", "#E93228", "#18D87F"],
+            borderWidth: 0
           },
         ],
       },
@@ -128,15 +263,15 @@ export class DashboardThreeComponent {
     });
   }
 
-  createChart3() {
+  createChart3(dataArr: number[]) {
     this.chart3 = new Chart("chart-a4a63e7d-7c9c-4963-a345-4f2c4c1ff19a", {
       type: "bar",
       data: {
-        labels: ["Total Employee", "Present", "Absent"],
+        labels: ["Gross Weight", "Dry Weight", "Wet Weight"],
         datasets: [
           {
-            label: "",
-            data: [50, 30, 20],
+            label: "Gross Weight, Dry Weight, Wet Weight",
+            data: dataArr,
             backgroundColor: ["#016A3B", "#7DC701", "#FE0000"],
             barThickness: 20,
           },

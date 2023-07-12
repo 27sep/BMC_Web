@@ -1,27 +1,20 @@
 <app-header></app-header>
 <main class="container-fluid">
+    <form [formGroup]="form">
 	<div class="page-content p-3">
 		<div class="row">
 			<div class="col-lg-3 d-flex flex-column mb-4" style="justify-content: space-between;">
                 <div>
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">South West Zone</option>
-                    </select>
-                    <!-- <select formControlName="zoneId" class="form-control form-select dashboard-select-box" [(ngModel)]="zoneId" (change)="onZoneSelect($event)">
-                        <option value="">Select</option>
-                        <option value={{zoneName}} disabled selected>{{zoneSelectName}}</option> 
-                        <option [value]="x.zoneId" *ngFor="let x of zoneList;">{{x.zoneName}}</option>
-                    </select> -->
+                    <select id="zoneId" formControlName="zoneId_" class="form-control form-select dashboard-select-box" (change)="onZoneSelect($event)">
+                        <option value="undefined" selected disabled>Select Zone</option>
+                        <option *ngFor="let x of zoneList; let i = index" [value]="x.zoneId" [selected]="i == 0">{{x.zoneName}}</option>
+                    </select> 
                 </div>
                 <div class="mt-4">
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">Pokhariput WC</option>
-                    </select> 
-                    <!-- <select formControlName="wcId" class="form-control form-select dashboard-select-box" [(ngModel)]="wcId">
-                        <option value="">Select</option>
-                        <option value={{wcName}} disabled selected>{{wcName}}</option>
-                        <option [value]="x.wcId" *ngFor="let x of zoneList;">{{x.wcName}}</option>
-                    </select>  -->
+                    <select id="wcId" formControlName="wcId_" class="form-control form-select dashboard-select-box" (change)="onWcSelect($event)">
+                        <option value="undefined" selected disabled>Select Wc</option>
+                        <option  *ngFor="let x of wcList;let i = index" [value]="x.wcId" [selected]="i == 0">{{x.wcName}}</option>
+                    </select>  
                 </div>
 			</div>
 			<div class="col-lg-9 mb-4">
@@ -32,9 +25,9 @@
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-1 stat-card">
 										<div>
-											<div>Stock</div>
+											<div>In Stock</div>
                                             <div class="">
-                                                <h4 class="mt-1 mb-0">20 TON</h4>
+                                                <h4 class="mt-1 mb-0">{{totalInStockQuantity}}</h4>
                                                 <span class="stat-card-sub-title">Quantity</span>
                                             </div>
 										</div>
@@ -50,9 +43,9 @@
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-2 stat-card">
 										<div>
-											<div>Packed</div>
+											<div>Toal Issue quantity</div>
 											<div class="">
-												<h4 class="mt-1 mb-0">14 Ton</h4>
+												<h4 class="mt-1 mb-0">{{totalIssueQuantity}}</h4>
 												<span class="stat-card-sub-title">Quantity</span>
 											</div>
 										</div>
@@ -64,7 +57,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<!-- <div class="col-md-3">
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-3 stat-card">
 										<div>
@@ -81,14 +74,14 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="col-md-3">
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-4 stat-card">
 										<div>
-											<div>Total</div>
+											<div>Total Purchase</div>
 											<div class="">
-												<h4 class="mt-1 mb-0">40 Ton</h4>
+												<h4 class="mt-1 mb-0">{{totalQuantityPurchased}}</h4>
 												<span class="stat-card-sub-title">Quantity</span>
 											</div>
 										</div>
@@ -108,15 +101,19 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">Compost</div>
+                            <div class="fw-bold">Inventory</div>
                         </div>
                         <div>
-                            <input type="date" name="" class="form-control" id="" value="2023-05-22">
+                            <input type="date" name="" class="form-control" id="fromDate" formControlName="fromDate"  [value]="inventoryFromDt"  (ngModelChange)="fromDateChange(this)">
+                        </div>
+                        <div>
+                            <input type="date" name="" class="form-control" id="toDate"  formControlName="toDate"   (ngModelChange)="toDateChange(this)">
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3">
                         <div class="border border-light rounded p-4">
-                            <canvas id="chart1" style="height: 200px;">{{ chart1 }}</canvas>
+                            <!-- <canvas id="chart1" style="height: 200px;">{{ chart1 }}</canvas> -->
+                            <canvas id="chart2" style="height: 300px;">{{ chart2 }}</canvas>
                         </div>
                     </div>
                 </div>
@@ -125,20 +122,20 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 py-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">Purchase Order</div>
+                            <div class="fw-bold">Inventory Purchase Order</div>
                         </div>
                         <div>
                             <select name="" class="form-control form-select bg-transparent text-white" id="">
                                 <option value="">This month</option>
-                            </select>
+                            </select> 
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3 d-flex align-items-center" style="background-image: linear-gradient(to top, #0B3686 0%, #89253F 100%);">
                         <div>
                             <h4 class="text-center w-75 mx-auto mb-3">
-                                Compost Quantity Ordered
+                                Total Quantity Purchase
                             </h4>
-                            <h2 style="font-size: 4rem; text-align: center; font-weight: bold; color: #009CFE;">652 KG</h2>
+                            <h3 style="font-size: 2rem; text-align: center; font-weight: bold; color: #009CFE;">{{totalQuantityPurchased}}</h3>
                         </div>
                     </div>
                 </div>
@@ -150,35 +147,16 @@
                             <div class="fw-bold">Stock List</div>
                         </div>
                         <div>
-                            <select name="" class="form-control form-select bg-transparent text-white" id="">
+                            <input type="text" name="" class="form-control" id="dateSelected" formControlName="dateSelected"  value="{{fromDate}} - {{toDate}}" >
+                            <!-- <select name="" class="form-control form-select bg-transparent text-white" id="">
                                 <option value="">This month</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <div class="dashboard-stock-item bg-red">
-                            <div>Plastic</div>
-                            <div>500 KG</div>
-                        </div>
-                        <div class="dashboard-stock-item bg-blue">
-                            <div>Paper</div>
-                            <div>370 KG</div>
-                        </div>
-                        <div class="dashboard-stock-item bg-grey">
-                            <div>Glass</div>
-                            <div>120 KG</div>
-                        </div>
-                        <div class="dashboard-stock-item bg-cyan">
-                            <div>Leather</div>
-                            <div>50 KG</div>
-                        </div>
-                        <div class="dashboard-stock-item bg-pink">
-                            <div>Cloth</div>
-                            <div>90 KG</div>
-                        </div>
-                        <div class="dashboard-stock-item bg-green">
-                            <div>Metal</div>
-                            <div>300 KG</div>
+                        <div class="dashboard-stock-item bg-blue" *ngFor="let item of purchaseItems">
+                            <div>{{item}}</div>
+                            <div>{{inStockMap.get(item)}} KG</div>
                         </div>
                     </div>
                 </div>
@@ -187,37 +165,32 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">Material Recovery Facility (MRF)</div>
+                            <div class="fw-bold">Inventory Report</div>
+                        </div>
+                        <div>
+                            <input type="date" name="" class="form-control" id="fromDate" formControlName="fromDate"  value="" (ngModelChange)="fromDateChange(this)">
+                        </div>
+                        <div>
+                            <input type="date" name="" class="form-control" id="toDate"  formControlName="toDate" value="" (ngModelChange)="toDateChange(this)">
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3">
                         <table class="table text-center text-white bg-transparent" style="background-image: linear-gradient(to left, #0E1D9B 0%, #2323DD 100%);">
                             <thead>
                                 <tr>
-                                    <th class="border-end">MRF Product Status</th>
-                                    <th class="border-end">Today</th>
-                                    <th class="border-end">This Week</th>
-                                    <th>This Month</th>
+                                    <th class="border-end">Inventory Items</th>
+                                    <th class="border-end">Purchase Stock</th>
+                                    <th class="border-end">Issue Stock</th>
+                                    <th class="border-end">In Stock</th>
+                          
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Bailing</td>
-                                    <td class="border-end border-bottom-0">700 KG</td>
-                                    <td class="border-end border-bottom-0">1700 KG</td>
-                                    <td class="border-bottom-0">2200 KG</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Ready to sale</td>
-                                    <td class="border-end border-bottom-0">460 KG</td>
-                                    <td class="border-end border-bottom-0">1500 KG</td>
-                                    <td class="border-bottom-0">1800 KG</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Unsold</td>
-                                    <td class="border-end border-bottom-0">640 KG</td>
-                                    <td class="border-end border-bottom-0">1200 KG</td>
-                                    <td class="border-bottom-0">800 KG</td>
+                            <tbody >
+                                <tr *ngFor="let item of purchaseItems">
+                                    <td class="border-end border-bottom-0">{{item}}</td>
+                                    <td class="border-end border-bottom-0">{{purchaseMap.get(item)}}</td>
+                                    <td class="border-end border-bottom-0">{{issueItemsMap.get(item)}}</td>
+                                    <td class="border-end border-bottom-0">{{inStockMap.get(item)}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -228,20 +201,21 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">MRF Garbage Collection</div>
+                            <div class="fw-bold"></div>
                         </div>
                         <div>
-                            <input type="date" name="" class="form-control" id="" value="2023-05-22">
+                            <input type="date" name="" class="form-control" id="" value="">
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3">
                         <div class="">
-                            <canvas id="chart2" style="height: 300px;">{{ chart2 }}</canvas>
+                            <!-- <canvas id="chart2" style="height: 300px;">{{ chart2 }}</canvas> -->
                         </div>
                     </div>
                 </div>
             </div>
 		</div>
 	</div>
+  </form>
 </main>
 <app-footer></app-footer>

@@ -17,6 +17,7 @@ export class GarbageComponent implements OnInit {
   constructor(private service: CommonService, private formBuilder: FormBuilder, private httpClient: HttpClient, private toastService: ToastService) {
     this.wcId = localStorage.getItem("wcId");
     this.getRouteList()
+
    }
    isAdd: boolean = true
    isUpdate: boolean = false
@@ -61,7 +62,6 @@ export class GarbageComponent implements OnInit {
       this.helperList = this.loginResponse.data;
     });
     this.service.getAllDriverList().subscribe((data) => {
-      this.helperList = data;
       this.driverList = data;
     });
     this.service.getActiveTrip().subscribe(
@@ -379,7 +379,7 @@ export class GarbageComponent implements OnInit {
     formData.set("file", this.tripStartReadingImgFile);
 
     this.httpClient
-      .post("http://43.204.240.44:9091/v1/uploadFile", formData)
+      .post(this.service.endpoint+":9091/v1/uploadFile", formData)
       .subscribe(
         (response: any) => {
           const fileUrl: string = response.data;
@@ -1216,7 +1216,7 @@ export class GarbageComponent implements OnInit {
     formData.append("file", this.tripEndReadingImgFile);
 
     this.httpClient
-      .post("http://43.204.240.44:9091/v1/uploadFile", formData)
+      .post(this.service.endpoint+":9091/v1/uploadFile", formData)
       .subscribe(
         (response: any) => {
           const fileUrl: string = response.data;
@@ -1415,5 +1415,39 @@ wetWeightCal(){
   const temp1= this.form.value.unloadwetWeightValue
   this.form.controls.wetWeightValue.setValue(temp-temp1)  ;
   }
+
+  allVehicleNos : any = []
+  allVehicleResponse : any = []
+  lastkeydown1: number = 0;
+  getAllWcVehicle(){
+    this.allVehicleNos = []
+    this.allVehicleResponse = []
+    let wcId:any = 0;
+    if(localStorage.getItem('role') == 'wcuser'){
+        wcId = localStorage.getItem('wcId')
+    }
+    this.service.getAllWcVehicle(wcId).subscribe( response => {
+         this.allVehicleResponse = response     
+    })
+  }
+
+
+  getVehicleNumberAuto($event:any){
+     let vehicleShortNo = (<HTMLInputElement>document.getElementById('vehicleNumber')).value;
+     if (vehicleShortNo.length > 2) {
+      if ($event.timeStamp - this.lastkeydown1 > 200) {
+        this.allVehicleNos = this.searchFromArray(this.allVehicleResponse, vehicleShortNo);
+      }
+    }
+  }
+  searchFromArray(arr:any[], regex:string) {
+    let matches = [], i;
+    for (i = 0; i < arr.length; i++) {
+      if (arr[i].match(regex)) {
+        matches.push(arr[i]);
+      }
+    }
+    return matches;
+  };
 
 }

@@ -4,13 +4,15 @@
 		<div class="row">
 			<div class="col-lg-3 d-flex flex-column mb-4" style="justify-content: space-between;">
                 <div>
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">South West Zone</option>
-                    </select>
+                    <select id="zoneId" formControlName="zoneId_" class="form-control form-select dashboard-select-box" (change)="onZoneSelect($event)">
+                        <option value="undefined" selected disabled>Select Zone</option>
+                        <option *ngFor="let x of zoneList; let i = index" [value]="x.zoneId" [selected]="i == 0">{{x.zoneName}}</option>
+                    </select> 
                 </div>
                 <div class="mt-4">
-                    <select name="" id="" class="form-control form-select dashboard-select-box">
-                        <option value="">Pokhariput WC</option>
+                    <select id="wcId" formControlName="wcId_" class="form-control form-select dashboard-select-box" (change)="onWcSelect($event)">
+                        <option value="undefined" selected disabled>Select Wc</option>
+                        <option  *ngFor="let x of wcList;let i = index" [value]="x.wcId" [selected]="i == 0">{{x.wcName}}</option>
                     </select>
                 </div>
 			</div>
@@ -22,10 +24,10 @@
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-1 stat-card">
 										<div>
-											<div>Stock</div>
+											<div>Total Gross Weight</div>
                                             <div class="">
-                                                <h4 class="mt-1 mb-0">20 TON</h4>
-                                                <span class="stat-card-sub-title">Quantity</span>
+                                                <h4 class="mt-1 mb-0">{{totalGrossWeight}}</h4>
+                                                <span class="stat-card-sub-title"></span>
                                             </div>
 										</div>
 										<div class="ms-auto">
@@ -40,9 +42,9 @@
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-2 stat-card">
 										<div>
-											<div>Packed</div>
+											<div>Total Dry Weight</div>
 											<div class="">
-												<h4 class="mt-1 mb-0">14 Ton</h4>
+												<h4 class="mt-1 mb-0">{{totalDryWeight}}</h4>
 												<span class="stat-card-sub-title">Quantity</span>
 											</div>
 										</div>
@@ -58,9 +60,9 @@
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-3 stat-card">
 										<div>
-											<div>Sold</div>
+											<div>Total Wet Weight</div>
 											<div class="">
-												<h4 class="mt-1 mb-0">6 Ton</h4>
+												<h4 class="mt-1 mb-0">{{totalWetWeight}}</h4>
 												<span class="stat-card-sub-title">Quantity</span>
 											</div>
 										</div>
@@ -72,7 +74,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3" hidden>
 								<div class="card">
 									<div class="card-body d-flex w-100 align-items-end card-4 stat-card">
 										<div>
@@ -98,7 +100,13 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">Compost</div>
+                            <div class="fw-bold">Garbage report</div>
+                        </div>
+                        <div class="ms-auto">
+                            <input type="date" name="" id="fromDate" class="form-control bg-transparent" [value]="garbageFromDate" (change)="onGarbageFromChange($event)" >
+                        </div>
+                        <div class="ms-auto">
+                            <input type="date" name="" id="toDate" class="form-control bg-transparent" [value]="garbageToDate" (change)="onGarbageToChange($event)" >
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3">
@@ -112,27 +120,35 @@
                 <div class="card h-100">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center">
-                            <div class="fw-bold">Compost</div>
+                            <div class="fw-bold">Garabage Details</div>
                         </div>
                     </div>
                     <div class="card-body px-4 pb-3">
                         <table class="table text-center text-white bg-transparent" style="background-image: linear-gradient(to left, #C02929 0%, #037072 100%);">
                             <thead>
                                 <tr>
-                                    <th class="border-end">Compost Product Status</th>
-                                    <th class="border-end">Today</th>
-                                    <th class="border-end">This Week</th>
-                                    <th>This Month</th>
+                                    <th class="border-end">Vehicle No</th>
+                                    <th class="border-end">wc</th>
+                                    <th class="border-end">Start Reading</th>
+                                    <th class="border-end">End Reading</th>
+                                    <th class="border-end">Gross Wt</th>
+                                    <th class="border-end">Dry Wt</th>
+                                    <th class="border-end">Wet Wt</th>
+                                    <th class="border-end">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border-end border-bottom-0">Package</td>
-                                    <td class="border-end border-bottom-0">700 KG</td>
-                                    <td class="border-end border-bottom-0">1700 KG</td>
-                                    <td class="border-bottom-0">2200 KG</td>
+                                <tr *ngFor="let item of garbageRes">
+                                    <td class="border-end border-bottom-0">{{item.vehicleNo}}</td>
+                                    <td class="border-end border-bottom-0">{{item.wcName}}</td>
+                                    <td class="border-end border-bottom-0">{{item.startReading}}</td>
+                                    <td class="border-end border-bottom-0">{{item.endReading}}</td>
+                                    <td class="border-end border-bottom-0">{{item.grossWt}}</td>
+                                    <td class="border-end border-bottom-0">{{item.dryWt}}</td>
+                                    <td class="border-end border-bottom-0">{{item.wetWt}}</td>
+                                    <td class="border-end border-bottom-0">{{item.tripStatusName}}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td class="border-end border-bottom-0">Unsold</td>
                                     <td class="border-end border-bottom-0">460 KG</td>
                                     <td class="border-end border-bottom-0">1500 KG</td>
@@ -143,7 +159,7 @@
                                     <td class="border-end border-bottom-0">640 KG</td>
                                     <td class="border-end border-bottom-0">1200 KG</td>
                                     <td class="border-bottom-0">800 KG</td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
@@ -167,9 +183,9 @@
                 <div class="card mb-4">
                     <div class="card-header rounded-0 border-0 px-4 pt-3 d-flex" style="justify-content: space-between;">
                         <div class="d-flex align-items-center w-100">
-                            <div class="fw-bold">Man Power</div>
+                            <div class="fw-bold">Garbage Report</div>
                             <div class="ms-auto">
-                                <input type="date" name="" id="" class="form-control bg-transparent" value="2023-05-22">
+                                <input type="date" name="" id="fromDate" class="form-control bg-transparent"  [value]="garbageFromDate" (change)="onGarbageFromChange($event)" >
                             </div>
                         </div>
                     </div>

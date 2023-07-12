@@ -2,31 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PitHistoryReq, PitModel, PitProcessMain, PitStageRoot, pitPayload } from '../model/pit.model';
+import { ReportGenerate, PitHistoryReq, PitModel, PitProcessMain, PitStageRoot,  pitPayload } from '../model/pit.model';
 import { PitInitModel, SubmitWorkflowPayload, UpdatePitStatusPayload } from '../model/pitInit.model';
 import { TodayTaskModel } from '../model/todaytask.model';
 import { PitStatusModel } from '../model/pit-status.model';
+
+
+//const endpoint =  `http://15.207.62.200`;  //DEV
+  const endpoint = `http://43.204.240.44`;   //PROD
+//const endpoint = `http://localhost`;       //LOCCAL
 
 const environment = {
 
 //  URL: `http://localhost:9091`,  //localhost url
 //  PIT_SERVICE_URL: 'http://localhost:8062/',
+//  REPORT_SERVICE_URL: 'http://localhost:8065/',
 //  AUTH_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login',
 
-//  URL: `http://15.207.62.200:9091`,  //dev url
-//  AUTH_SERVICE_URL: 'http://15.207.62.200:8064/bmcwastemanagement/auth/users/login',
-//  PIT_SERVICE_URL: 'http://15.207.62.200:8062/',
-
-  URL: `http://43.204.240.44:9091`,  //prod url
-  PIT_SERVICE_URL: 'http://43.204.240.44:8062/',
-  AUTH_SERVICE_URL: 'http://43.204.240.44:8064/bmcwastemanagement/auth/users/login',
+  URL: endpoint+':9091',  //dev url
+  AUTH_SERVICE_URL: endpoint+':8064/bmcwastemanagement/auth/users/login',
+  PIT_SERVICE_URL:  endpoint+':8062/',
+  REPORT_SERVICE_URL: endpoint+':8065/',
 
   getAllPit: 'pit/v1/getAllPitListByMccId',
   savePitInit: 'pit/v1/savePitProcessDetails',
   getPitHistory: 'pit/v1/getPitProcessDetails',
   submitWorkflowInit: 'pit/v1/pitWorkFlow',
   pitstatusUpdate: 'pit/v1/updatePitStatus',
-
+  reportService: 'generate-report',
 }
 
 @Injectable({
@@ -40,7 +43,6 @@ export class PitService {
 
   getAllPitsByMcc(pitPay : pitPayload): Observable<PitModel> {
     let param = pitPay;
-    console.log('  Payload for PIT VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW          {} ' , param);
     let urlString =   environment.PIT_SERVICE_URL +'pit/v1/getAllPitListByMccId';
     return this.http.post<PitModel>(urlString, param);
   }
@@ -65,6 +67,12 @@ export class PitService {
 
   updateRequestForStatusUpdate(inParam: UpdatePitStatusPayload): Observable<PitModel> {
     let urlString = environment.PIT_SERVICE_URL + environment.pitstatusUpdate;
+    return this.http.post<PitModel>(urlString, inParam);
+  }
+
+  
+  onReportGenerate(inParam: ReportGenerate): Observable<PitModel> {
+    let urlString = environment.PIT_SERVICE_URL + environment.reportService;
     return this.http.post<PitModel>(urlString, inParam);
   }
 

@@ -1,8 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import Chart, { scales } from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { ReportGenerate } from 'src/app/model/pit.model';
 import { CommonService } from 'src/app/service/common.service';
+import { ReportService } from 'src/app/service/report.service';
 
 @Component({
   selector: 'app-dashboard-four',
@@ -10,31 +13,51 @@ import { CommonService } from 'src/app/service/common.service';
   styleUrls: ['../../../common.css', './dashboard-four.component.css']
 })
 export class DashboardFourComponent implements OnInit {
-  constructor(private service: CommonService) { 
-   
-    }
+  
   chart1: any;
   chart2: any;
   chart3: any;
   chart4: any;
   chart5: any;
+  role: any = ''
   loginResponse: any
   mrfReportList: any = []
   zoneList: any = []
+  zoneSelectId: any = 0
+  wcSelectId: any = 0
   wcList: any = []
+  zoneId: any
+  wcId: any
   zoneName:any
   wcName:any
   dashboardResponseV2:any
+  inventoryDate: string = "";
+   
   form = new FormGroup({
     zoneId: new FormControl,
-    wcId: new FormControl
+    wcId: new FormControl  
   });
+
+
+  payloadInventory: ReportGenerate = {
+    reportType: "INVENTORY",
+    type: "MONTHLY",
+    fromDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "",
+    toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "",
+    wcId: 0,
+    reportName: "INVENTORY"
+  }
+
+  constructor(private datePipe: DatePipe, private service: CommonService, private reportService: ReportService){
+    this.role = localStorage.getItem('role');
+  }
   ngOnInit() {
+    this.getZones();
     this.createChart1();
     this.createChart2();
     this.createChart3();
     this.createChart4();
-    this.createChart5();
+    this.createChart5([0,0,0]);
     if (localStorage.getItem("role") == "bmcadmin") {
       console.log("hello")
       this.service.getZoneAllData().subscribe(
@@ -77,6 +100,113 @@ export class DashboardFourComponent implements OnInit {
     }
     
   }
+
+  getZones() {
+    try {
+      this.service.getZoneAllData()
+        .subscribe((response) => {
+          if (this.role == 'bmcadmin') {
+            this.zoneList = response
+          } else if (this.role == 'wcuser') {
+            let tempArr: any = []
+            tempArr = response
+            this.zoneList.push(tempArr.filter((temp: any) => temp.zoneId == localStorage.getItem('zoneId'))[0]);
+            const e = new Event("change");
+            const element = document.querySelector('#zoneId')
+            element?.dispatchEvent(e);
+          }
+
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  getWcListByZoneId() {
+    try {
+      this.service.getWcListByZoneId(this.zoneSelectId)
+        .subscribe((response: any) => {
+          if (this.role == 'bmcadmin') {
+            this.wcList = response.data
+          } else if (this.role == 'wcuser') {
+            let tempArr: any = []
+            tempArr = response.data
+            this.wcList.push(tempArr.filter((temp: any) => temp.wcId == localStorage.getItem('wcId'))[0])
+            const e = new Event("change");
+            const element = document.querySelector('#wcId')
+            element?.dispatchEvent(e);
+          }
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  onZoneSelect(ev: any) {
+    if(ev.target.value !== 'undefined'){
+      this.zoneSelectId = ev.target.value
+    }else{
+      this.zoneSelectId = this.zoneList[0].zoneId;
+    }
+    console.log(ev)
+    this.wcList = []
+    this.getWcListByZoneId();
+  }
+
+  onWcSelect(ev: any) {
+    if(ev.target.value !== 'undefined'){
+      this.wcSelectId = ev.target.value;
+    }else{
+      this.wcSelectId = this.wcList[0].wcId;
+    }
+
+    this.payloadInventory.fromDate = this.payloadInventory.fromDate ? this.payloadInventory.fromDate : this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    this.payloadInventory.toDate = this.payloadInventory.toDate ? this.payloadInventory.toDate : this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    this.getInventoryRecord();
+  }
+
+  onInventoryChange(ev: any){
+    console.log(ev.target.value);
+    this.payloadInventory.fromDate = ev.target.value
+    this.payloadInventory.toDate = ev.target.value
+    this.getInventoryRecord();
+  }
+
+  getInventoryRecord(){
+    this.payloadInventory.wcId = this.wcSelectId
+    try {
+      this.reportService.getInventoryReport(this.payloadInventory)
+        .subscribe((response:any) => {
+           let inStock = 0;
+           let purchase = 0;
+           let issueStock = 0;
+      
+           //Purchase
+           let itemPurchaseArr = response.itemPurchaseNames;
+           itemPurchaseArr.forEach((element: string) => {
+            purchase = response.response.PURCHASE._1[element].reduce((sum:number, item:any) => sum + item.quantity, 0);
+           });
+
+           //Issue 
+           let itemIssueArr = response.itemIssueNames;
+           itemIssueArr.forEach((element: string) => {
+            issueStock = response.response.ISSUESTOCK._1[element].reduce((sum:number, item:any) => sum + item.quantity, 0);
+           });
+
+
+           //In Stock
+           let itemStockArr = response.itemInStockNames;
+           itemStockArr.forEach((element: string) => {
+            inStock = response.response.INSTOCK._1[element].reduce((sum:number, item:any) => sum + item.quantity, 0);
+           });
+
+           this.createChart5([purchase, issueStock, inStock]);
+        });
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
 
   randomScalingFactor() {
     return Math.round(Math.random() * 100);
@@ -274,15 +404,19 @@ export class DashboardFourComponent implements OnInit {
     });
   }
 
-  createChart5() {
+  createChart5(dataArr: number[]) {
+    this.inventoryDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd') ?? "";
+    if (this.chart5 != null && this.chart5 != undefined) {
+      this.chart5.destroy()
+    }
     this.chart5 = new Chart("chart-029ea4bc-fac1-4296-b731-25bb7c6598ac", {
       type: "bar",
       data: {
-        labels: ["Package", "Unsold", "Sold"],
+        labels: ["Purchase", "Issue Stock", "In Stock"],
         datasets: [
           {
             label: "",
-            data: [500, 260, 240],
+            data: dataArr,
             backgroundColor: ["#14A2F4", "#EE321F", "#12D881"],
             barThickness: 20,
           },

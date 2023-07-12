@@ -5,16 +5,16 @@
 			<div class="col-lg-3 d-flex flex-column mb-4" style="justify-content: space-between;">
                 <form [formGroup]="form">
                 <div>
-                    <select name="" id="" class="form-control form-select dashboard-select-box" formControlName="zoneId" (ngModelChange)="getAllWcByZoneId()" [(ngModel)]='zoneName'>
-                        
-                        <option [value]="x.zoneId" *ngFor="let x of zoneList;">{{x.zoneName}}</option>
-                    </select>
+                    <select id="zoneId" formControlName="zoneId_" class="form-control form-select dashboard-select-box" (change)="onZoneSelect($event)">
+                        <option value="undefined" selected disabled>Select Zone</option>
+                        <option *ngFor="let x of zoneList; let i = index" [value]="x.zoneId" [selected]="i == 0">{{x.zoneName}}</option>
+                    </select> 
                 </div>
                 <div class="mt-4">
-                    <select name="" id="" class="form-control form-select dashboard-select-box" formControlName="wcId" (ngModelChange)="getMrfReportByWc()">
-                       
-                        <option [value]="x.wcId" *ngFor="let x of wcList">{{x.wcName}}</option>
-                    </select>
+                    <select id="wcId" formControlName="wcId_" class="form-control form-select dashboard-select-box" (change)="onWcSelect($event)">
+                        <option value="undefined" selected disabled>Select Wc</option>
+                        <option  *ngFor="let x of wcList;let i = index" [value]="x.wcId" [selected]="i == 0">{{x.wcName}}</option>
+                    </select>  
                 </div>
             </form>
 			</div>
@@ -106,7 +106,7 @@
                             <div class="d-flex align-items-center w-100">
                             <div class="fw-bold">Inventory</div>
                             <div class="ms-auto">
-                                <input type="date" name="" id="" class="form-control bg-transparent" value="2023-05-22">
+                                <input type="date" name="" id="" class="form-control bg-transparent" [value]="inventoryDate" (change)="onInventoryChange($event)">
                             </div>
                         </div>
                        

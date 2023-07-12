@@ -96,9 +96,11 @@ export class LoginComponent {
       if(roleSuperadminPermission == true){
         localStorage.setItem('userInfo', '');
         localStorage.setItem('wcId',  '0');
+        localStorage.setItem('zoneId','0');
       }else{
         this.logindata.userentity.length > 0 && this.logindata.userentity[0].mccEntity != undefined ? localStorage.setItem('userInfo', this.logindata.userentity[0].mccEntity) : localStorage.setItem('userInfo', '');
         localStorage.setItem('wcId', this.logindata.userentity.length > 0 && this.logindata.userentity[0] != undefined ? this.logindata.userentity[0].wcEntity?.wcId : 0);
+        localStorage.setItem('zoneId', this.logindata.userentity.length > 0 && this.logindata.userentity[0] != undefined && this.logindata.userentity[0].mccEntity != undefined ? this.logindata.userentity[0].mccEntity?.zoneId?.zoneId : 0);   
       }
       //this.logindata.userentity.length > 0 && this.logindata.userentity[0].mccEntity != undefined ? localStorage.setItem('userInfo', this.logindata.userentity[0].mccEntity) : localStorage.setItem('userInfo', '');
       //localStorage.setItem('wcId', this.logindata.userentity.length > 0 && this.logindata.userentity[0] != undefined ? this.logindata.userentity[0].wcEntity?.wcId : 0);

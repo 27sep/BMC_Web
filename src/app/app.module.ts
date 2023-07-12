@@ -15,7 +15,7 @@ import { MrfComponent } from './superadmin/mrf/mrf.component';
 import { DryingYardMasterComponent } from './superadmin/drying-yard-master/drying-yard-master.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginGuard } from './superadmin/auth-guard/LoginGuard';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MiniSidebarComponent } from './superadmin/common/mini-sidebar/mini-sidebar.component';
 
 @NgModule({
@@ -41,7 +41,7 @@ import { MiniSidebarComponent } from './superadmin/common/mini-sidebar/mini-side
     }),
   ],
   providers: [
-    AuthService,CommonService,
+    AuthService,CommonService,DatePipe,
     { provide: LoginGuard, useClass: LoginGuard },
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
