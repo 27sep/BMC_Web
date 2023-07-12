@@ -13,11 +13,17 @@
     position: relative;
     margin-bottom: 3.5rem;
 }
-
+@media (max-width: 1200px) {
+    .pit-item {
+        width: calc(100% / 2);
+        text-align: center;
+        position: relative;
+        margin-bottom: 3.5rem;
+    }
+}
 .pit-item.today {
     width: calc(100% / 4);
 }
-
 .pit-warning {
     position: absolute;
     top: -30px;
