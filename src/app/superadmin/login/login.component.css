@@ -139,6 +139,12 @@
     display:  block;
 	padding-bottom: 10px;
 }
+#password-field{
+    
+    
+    border-radius:  3px;
+    padding: auto;
+}
 .wrap-input {
     position:  relative;
     width:  100%;

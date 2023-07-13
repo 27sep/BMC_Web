@@ -35,11 +35,11 @@
                                                       [type]="showPassword ? 'text' : 'password'"
                                                       class="form-control pwd-control" formControlName="password" autocomplete="new-password"
                                                       id="password-field" placeholder="Password"/>
-                                                  <div>
-                                                    <i alt="show" class="far fa-eye eye-show" 
+                                                  <div >
+                                                    <i  alt="show" class="far fa-eye eye-show" 
                                                     (click)="showPassword = !showPassword"
                                                     [class.hide]="showPassword"></i>
-                                                    <i alt="hide" class="far fa-eye-slash eye-hide" 
+                                                    <i  alt="hide" class="far fa-eye-slash eye-hide" 
                                                     (click)="showPassword = !showPassword"
                                                     [class.hide]="!showPassword"></i>
                                                   </div>
