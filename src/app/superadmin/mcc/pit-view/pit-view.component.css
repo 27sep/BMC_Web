@@ -15,7 +15,7 @@
 }
 @media (max-width: 1200px) {
     .pit-item {
-        width: calc(100% / 5);
+        width: calc(100% / 2);
         text-align: center;
         position: relative;
         margin-bottom: 3.5rem;
